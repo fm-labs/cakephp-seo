@@ -22,7 +22,7 @@ class SitemapController extends Controller
     /**
      * Sitemap index method
      * Renders a sitemap index xml of available sitemap scopes
-     * @TODO Cache sitemap index
+     * @TODO If sitemap count == 1, then render that sitemap directly instead of the index view
      */
     public function index()
     {
@@ -43,7 +43,6 @@ class SitemapController extends Controller
      * Renders a list of sitemap locations for given scope in xml format
      *
      * @param null $sitemap
-     * @todo Cache sitemaps
      */
     public function sitemap($sitemap = null)
     {
@@ -80,7 +79,7 @@ class SitemapController extends Controller
 
             $sitemaps = $collector->toArray();
 
-            //@TODO Enable caching
+            //@TODO Implement sitemap caching
             //Cache::write($cacheKey, $sitemaps);
         }
 

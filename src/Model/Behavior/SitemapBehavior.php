@@ -56,17 +56,7 @@ class SitemapBehavior extends Behavior
 
 
     /**
-     * Formats query as a flat list where the keys are the primary key for the table
-     * and the values are the display field for the table. Values are prefixed to visually
-     * indicate relative depth in the tree.
-     *
-     * ### Options
-     *
-     * - keyPath: A dot separated path to the field that will be the result array key, or a closure to
-     *   return the key from the provided row.
-     * - valuePath: A dot separated path to the field that is the array's value, or a closure to
-     *   return the value from the provided row.
-     * - spacer: A string to be used as prefix for denoting the depth in the tree for each item.
+     * Formats query as a flat list of sitemap locations
      *
      * @param \Cake\ORM\Query $query The query object to format.
      * @param array $options Array of options as described above.
