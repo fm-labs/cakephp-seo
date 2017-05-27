@@ -19,7 +19,17 @@ class SeoPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
+            'Settings.get' => 'getSettings',
             'Backend.Menu.get' => 'getBackendMenu',
+        ];
+    }
+
+    public function getSettings(Event $event)
+    {
+        $event->result['Seo'] = [
+            'Google.Analytics.trackingId' => [
+                'type' => 'string',
+            ],
         ];
     }
 

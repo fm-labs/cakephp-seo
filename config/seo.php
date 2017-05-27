@@ -2,7 +2,7 @@
 return [
     'Seo' => [
         'Sitemap' => [
-            'indexUrl' => '/my-custom-sitemap-url.xml' // URL array or string
+            'indexUrl' => null
         ],
         'Robots' => [
             '*' => [
@@ -11,7 +11,7 @@ return [
         ],
         'Google' => [
             'Analytics' => [
-                'trackingId' => '' // Google analytics tracking ID
+                'trackingId' => ''
             ]
         ],
     ]
