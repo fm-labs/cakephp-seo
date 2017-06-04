@@ -4,6 +4,7 @@ namespace Seo;
 
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
+use Cake\Routing\Router;
 
 class SeoPlugin implements EventListenerInterface
 {
@@ -21,6 +22,7 @@ class SeoPlugin implements EventListenerInterface
         return [
             'Settings.get' => 'getSettings',
             'Backend.Menu.get' => 'getBackendMenu',
+            'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }
 
@@ -31,6 +33,13 @@ class SeoPlugin implements EventListenerInterface
                 'type' => 'string',
             ],
         ];
+    }
+
+    public function buildBackendRoutes()
+    {
+        Router::scope('/seo/admin', ['plugin' => 'Seo', 'prefix' => 'admin', '_namePrefix' => 'seo:admin:'], function($routes) {
+            $routes->fallbacks('DashedRoute');
+        });
     }
 
     public function getBackendMenu(Event $event)
