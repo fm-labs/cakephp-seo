@@ -2,7 +2,6 @@
 
 namespace Seo\View\Helper;
 
-
 use Cake\Event\Event;
 use Cake\View\Helper;
 use Cake\Core\Configure;

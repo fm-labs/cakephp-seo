@@ -28,7 +28,7 @@ class SitemapController extends Controller
     {
         $sitemaps = $this->_getSitemaps();
         $indexUrls = [];
-        foreach(array_keys($sitemaps) as $sitemap) {
+        foreach (array_keys($sitemaps) as $sitemap) {
             $indexUrls[] = ['loc' => Router::url(['action' => 'sitemap', $sitemap])];
         }
 
@@ -66,7 +66,6 @@ class SitemapController extends Controller
         $sitemaps = Cache::read($cacheKey);
 
         if (!$sitemaps) {
-
             # Collect sitemaps via collector event
             // Example event listener:
             // $this->eventManager()->on('Sitemap.get', function(Event $event) {
@@ -85,5 +84,4 @@ class SitemapController extends Controller
 
         return $sitemaps;
     }
-
 }

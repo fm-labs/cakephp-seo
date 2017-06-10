@@ -36,13 +36,13 @@ class RobotsController extends Controller
 
         // user agent rules
         if (Configure::check('Seo.Robots') && !Configure::read('Seo.Robots.disable')) {
-            foreach ((array) Configure::read('Seo.Robots') as $agent => $rules) {
-
+            foreach ((array)Configure::read('Seo.Robots') as $agent => $rules) {
                 $lines[] = 'User-agent: ' . $agent;
                 foreach ($rules as $location) {
                     try {
                         $lines[] = 'Disallow: ' . Router::url($location, false);
-                    } catch (\Exception $ex) {}
+                    } catch (\Exception $ex) {
+                    }
                 }
                 $lines[] = '';
             }
@@ -50,6 +50,7 @@ class RobotsController extends Controller
 
         $this->response->type('text/plain');
         $this->response->body(join("\n", $lines));
+
         return $this->response;
     }
 }

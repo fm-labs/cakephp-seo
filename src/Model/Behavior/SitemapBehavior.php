@@ -54,7 +54,6 @@ class SitemapBehavior extends Behavior
         return $this->formatSitemap($query, $options);
     }
 
-
     /**
      * Formats query as a flat list of sitemap locations
      *
@@ -69,9 +68,7 @@ class SitemapBehavior extends Behavior
             $locations = [];
             $fields = $this->config('fields');
             foreach ($results as $entity) {
-
                 try {
-
                     $location = $entity[$fields['loc']];
                     $location = ($location) ?: $entity['url'];
                     if (!$location) {
@@ -88,12 +85,11 @@ class SitemapBehavior extends Behavior
 
                     $loc = new SitemapLocation($location, $priority, $lastmod, $frequency);
                     $locations[$loc->loc] = $loc;
-
-                } catch (\Exception $ex) {}
+                } catch (\Exception $ex) {
+                }
             }
 
             return new Collection($locations);
         });
     }
-
 }

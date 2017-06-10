@@ -2,7 +2,6 @@
 
 namespace Seo\Controller\Admin;
 
-
 use Cake\Core\Configure;
 use Cake\Network\Exception\BadRequestException;
 use Cake\Network\Exception\NotFoundException;
@@ -51,7 +50,6 @@ class SeoMetaController extends AppController
                 }
             }
         }
-
 
         $this->set(compact('table', 'tables', 'contents', 'meta'));
     }

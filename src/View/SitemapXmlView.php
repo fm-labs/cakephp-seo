@@ -15,7 +15,6 @@ class SitemapXmlView extends View
         $this->response->cache(mktime(0, 0, 0, date('m'), date('d'), date('Y')), $cacheDuration);
     }
 
-
     public function render($view = null, $layout = null)
     {
         $this->viewPath = 'Sitemap';
@@ -23,4 +22,4 @@ class SitemapXmlView extends View
 
         return parent::render($view, false);
     }
-} 
+}
