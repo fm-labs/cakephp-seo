@@ -2,33 +2,17 @@
 
 namespace Seo\Controller\Admin;
 
-use App\Controller\Admin\AppController as BaseAdminAppController;
+use Cake\Controller\Controller;
 
-class AppController extends BaseAdminAppController
+/**
+ * Class AppController
+ *
+ * @package Seo\Controller\Admin
+ */
+class AppController extends Controller
 {
     /**
-     * @return array
-     * @deprecated Use backend config file instead
+     * @var array
      */
-    public static function backendMenu()
-    {
-        return [
-            'plugin.seo' => [
-                'plugin' => 'Seo',
-                'title' => 'Seo',
-                'url' => ['plugin' => 'Seo', 'controller' => 'Dashboard', 'action' => 'index'],
-                'data-icon' => 'search',
-
-                /*
-                '_children' => [
-                    'keywords' => [
-                        'title' => 'Keywords',
-                        'url' => ['plugin' => 'Seo', 'controller' => 'SeoKeywords', 'action' => 'index'],
-                        'data-icon' => 'word'
-                    ],
-                ]
-                */
-            ]
-        ];
-    }
+    public $components = ['Backend.Backend'];
 }

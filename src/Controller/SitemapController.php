@@ -33,7 +33,6 @@ class SitemapController extends Controller
         }
 
         $this->viewBuilder()->className('Seo.SitemapXml');
-
         $this->set('type', 'index');
         $this->set('locations', $indexUrls);
     }
@@ -56,10 +55,12 @@ class SitemapController extends Controller
         }
 
         $this->viewBuilder()->className('Seo.SitemapXml');
-
         $this->set('locations', $sitemaps[$sitemap]);
     }
 
+    /**
+     * @return array
+     */
     protected function _getSitemaps()
     {
         $cacheKey = 'sitemaps';

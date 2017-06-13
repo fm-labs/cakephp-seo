@@ -15,7 +15,9 @@ use Seo\Sitemap\SitemapLocation;
  */
 class SitemapBehavior extends Behavior
 {
-
+    /**
+     * @var array
+     */
     protected $_defaultConfig = [
         'fields' => [
             'loc'           => 'sitemap_loc',       // fallback to url

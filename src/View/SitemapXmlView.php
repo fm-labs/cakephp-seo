@@ -1,12 +1,19 @@
 <?php
 namespace Seo\View;
 
-use Cake\Network\Exception\NotFoundException;
 use Cake\View\View;
-use Seo\Controller\Component\SitemapComponent;
 
+/**
+ * Class SitemapXmlView
+ *
+ * @package Seo\View
+ */
 class SitemapXmlView extends View
 {
+    /**
+     * Initialize.
+     * Set response type and caching
+     */
     public function initialize()
     {
         $cacheDuration = '+1 day';
@@ -15,6 +22,11 @@ class SitemapXmlView extends View
         $this->response->cache(mktime(0, 0, 0, date('m'), date('d'), date('Y')), $cacheDuration);
     }
 
+    /**
+     * @param null $view
+     * @param null $layout
+     * @return null|string
+     */
     public function render($view = null, $layout = null)
     {
         $this->viewPath = 'Sitemap';

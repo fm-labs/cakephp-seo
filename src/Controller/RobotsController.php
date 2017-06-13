@@ -23,9 +23,8 @@ class RobotsController extends Controller
     {
         $this->autoRender = false;
 
-        $lines = [];
-
         // sitemap
+        $lines = [];
         if (!Configure::read('Seo.Sitemap.disable') && !Configure::read('Seo.Robots.disable')) {
             $sitemapUrl = Configure::read('Seo.Sitemap.indexUrl');
             $sitemapUrl = ($sitemapUrl) ?: ['_name' => 'seo:sitemap'];
@@ -49,7 +48,7 @@ class RobotsController extends Controller
         }
 
         $this->response->type('text/plain');
-        $this->response->body(join("\n", $lines));
+        $this->response->body(trim(join("\n", $lines)));
 
         return $this->response;
     }

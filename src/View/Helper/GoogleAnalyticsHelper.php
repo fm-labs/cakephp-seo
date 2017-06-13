@@ -6,8 +6,16 @@ use Cake\Event\Event;
 use Cake\View\Helper;
 use Cake\Core\Configure;
 
+/**
+ * Class GoogleAnalyticsHelper
+ *
+ * @package Seo\View\Helper
+ */
 class GoogleAnalyticsHelper extends Helper
 {
+    /**
+     * @param Event $event
+     */
     public function beforeLayout(Event $event)
     {
         $trackingId = Configure::read('Seo.Google.Analytics.trackingId');
@@ -16,6 +24,8 @@ class GoogleAnalyticsHelper extends Helper
         $html = "";
         if ($trackingId && !$disabled) {
             $html = $this->_View->element('Seo.Tracking/google_analytics', ['trackingId' => $trackingId]);
+
+            // disable in debug mode
             if (Configure::read('debug')) {
                 $html = "<!-- " . $html . " -->";
                 $html .= "<script>console.log('Seo: Google analytics tracking script has been disabled in debug mode')</script>";

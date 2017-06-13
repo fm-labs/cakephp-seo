@@ -5,10 +5,24 @@ namespace Seo\Sitemap;
 use Cake\I18n\Time;
 use Cake\Routing\Router;
 
+/**
+ * Class SitemapLocation
+ *
+ * @package Seo\Sitemap
+ */
 class SitemapLocation implements \ArrayAccess
 {
+    /**
+     * @var array
+     */
     protected $_fields = [];
 
+    /**
+     * @param null|array $loc
+     * @param null $priority
+     * @param null $lastmod
+     * @param null $changefreq
+     */
     public function __construct($loc = null, $priority = null, $lastmod = null, $changefreq = null)
     {
         if (is_array($loc) && isset($loc['loc'])) {
@@ -35,17 +49,10 @@ class SitemapLocation implements \ArrayAccess
         $this->_fields = compact('loc', 'priority', 'lastmod', 'changefreq');
     }
 
-    /*
-    public function __set($key, $val)
-    {
-        if (!array_key_exists($key, $this->_fields)) {
-            throw new \InvalidArgumentException(sprintf("Invalid sitemap key '%s'"));
-        }
-
-        $this->_fields[$key] = $val;
-    }
-    */
-
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function __get($key)
     {
         if (!array_key_exists($key, $this->_fields)) {
@@ -55,6 +62,9 @@ class SitemapLocation implements \ArrayAccess
         return $this->_fields[$key];
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return $this->_fields;
@@ -109,6 +119,7 @@ class SitemapLocation implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
+        throw new \BadMethodCallException('ArrayAccess setter not supported');
     }
 
     /**
@@ -122,5 +133,6 @@ class SitemapLocation implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
+        throw new \BadMethodCallException('ArrayAccess unsetter not supported');
     }
 }

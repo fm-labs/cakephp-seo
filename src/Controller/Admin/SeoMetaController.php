@@ -3,15 +3,25 @@
 namespace Seo\Controller\Admin;
 
 use Cake\Core\Configure;
-use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\NotFoundException;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
+/**
+ * Class SeoMetaController
+ *
+ * @package Seo\Controller\Admin
+ */
 class SeoMetaController extends AppController
 {
+    /**
+     * @var array
+     */
     protected $_metaTables = [];
 
+    /**
+     * @param Event $event
+     * @return \Cake\Network\Response|null|void
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -27,9 +37,11 @@ class SeoMetaController extends AppController
         }
     }
 
+    /**
+     * Index action
+     */
     public function index()
     {
-
         $tables = $this->_metaTables;
         $table = $this->request->query('table');
 

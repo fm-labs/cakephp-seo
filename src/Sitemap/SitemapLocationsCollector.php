@@ -20,7 +20,7 @@ class SitemapLocationsCollector
     protected $_locations = [];
 
     /**
-     * @param \Seo\Sitemap\SitemapLocation|array $loc
+     * @param SitemapLocation|array $loc
      * @param string $scope Sitemap scope. Defaults to 'default'.
      * @return $this
      */
