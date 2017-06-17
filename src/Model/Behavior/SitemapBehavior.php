@@ -66,7 +66,6 @@ class SitemapBehavior extends Behavior
     public function formatSitemap(Query $query, array $options = [])
     {
         return $query->formatResults(function (ResultSetInterface $results) use ($options) {
-
             $locations = [];
             $fields = $this->config('fields');
             foreach ($results as $entity) {
@@ -88,6 +87,7 @@ class SitemapBehavior extends Behavior
                     $loc = new SitemapLocation($location, $priority, $lastmod, $frequency);
                     $locations[$loc->loc] = $loc;
                 } catch (\Exception $ex) {
+                    //debug($ex->getMessage());
                 }
             }
 

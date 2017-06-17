@@ -79,8 +79,8 @@ class SitemapController extends Controller
 
             $sitemaps = $collector->toArray();
 
-            //@TODO Implement sitemap caching
-            //Cache::write($cacheKey, $sitemaps);
+            //@TODO Enable sitemap caching
+            Cache::write($cacheKey, $sitemaps);
         }
 
         return $sitemaps;
