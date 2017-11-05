@@ -29,7 +29,7 @@ class SitemapController extends Controller
         $sitemaps = $this->_getSitemaps();
         $indexUrls = [];
         foreach (array_keys($sitemaps) as $sitemap) {
-            $indexUrls[] = ['loc' => Router::url(['action' => 'sitemap', $sitemap])];
+            $indexUrls[] = ['loc' => Router::url(['action' => 'sitemap', '_ext' => 'xml', $sitemap])];
         }
 
         $this->viewBuilder()->className('Seo.SitemapXml');
