@@ -5,6 +5,7 @@ namespace Seo;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Routing\Router;
+use Settings\SettingsManager;
 
 /**
  * Class SeoPlugin
@@ -20,7 +21,7 @@ class SeoPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Settings.get' => 'getSettings',
+            'Settings.build' => 'buildSettings',
             'Backend.Menu.get' => 'getBackendMenu',
             'Backend.Routes.build' => 'buildBackendRoutes'
         ];
@@ -28,15 +29,17 @@ class SeoPlugin implements EventListenerInterface
 
     /**
      * @param Event $event
-     * @return void
      */
-    public function getSettings(Event $event)
+    public function buildSettings(Event $event)
     {
-        $event->result['Seo'] = [
-            'Google.Analytics.trackingId' => [
-                'type' => 'string',
-            ],
-        ];
+        if ($event->subject() instanceof SettingsManager) {
+
+            $event->subject()->add('Seo', [
+                'Google.Analytics.trackingId' => [
+                    'type' => 'string',
+                ],
+            ]);
+        }
     }
 
     /**
