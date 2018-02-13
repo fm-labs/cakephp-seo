@@ -22,7 +22,7 @@ class SeoPlugin implements EventListenerInterface
     {
         return [
             'Settings.build' => 'buildSettings',
-            'Backend.Menu.get' => 'getBackendMenu',
+            'Backend.Menu.build' => 'buildBackendMenu',
             'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }
@@ -57,7 +57,7 @@ class SeoPlugin implements EventListenerInterface
      * @param Event $event
      * @return void
      */
-    public function getBackendMenu(Event $event)
+    public function buildBackendMenu(Event $event)
     {
         $event->subject()->addItem([
             'title' => 'Seo',
