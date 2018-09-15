@@ -25,6 +25,7 @@ class RobotsControllerTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->useHttpServer(true);
         $this->testConfig = [
             'Seo' => [
                 'Sitemap' => [
