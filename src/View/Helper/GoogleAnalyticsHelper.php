@@ -13,6 +13,11 @@ use Cake\Core\Configure;
  */
 class GoogleAnalyticsHelper extends Helper
 {
+    protected $_defaultConfig = [
+        'implementation' => 'gtag', // 'gtag' or 'analytics'
+        'block' => 'google_analytics'
+    ];
+
     /**
      * @param Event $event
      */
@@ -23,7 +28,8 @@ class GoogleAnalyticsHelper extends Helper
 
         $html = "";
         if ($trackingId && !$disabled) {
-            $html = $this->_View->element('Seo.Tracking/google_analytics', ['trackingId' => $trackingId]);
+
+            $html = $this->_View->element('Seo.Tracking/google_' . $this->config('implementation'), ['trackingId' => $trackingId]);
 
             // disable in debug mode
             if (Configure::read('debug')) {
@@ -32,6 +38,6 @@ class GoogleAnalyticsHelper extends Helper
             }
         }
 
-        $this->_View->assign('google_analytics', $html);
+        $this->_View->assign($this->config('block'), $html);
     }
 }
