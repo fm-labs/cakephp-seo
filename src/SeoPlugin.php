@@ -48,9 +48,11 @@ class SeoPlugin implements EventListenerInterface
      */
     public function buildBackendRoutes()
     {
-        Router::scope('/seo/admin', ['plugin' => 'Seo', 'prefix' => 'admin', '_namePrefix' => 'seo:admin:'], function ($routes) {
-            $routes->fallbacks('DashedRoute');
-        });
+        if (\Configure::read('Debug')) {
+            Router::scope('/seo/admin', ['plugin' => 'Seo', 'prefix' => 'admin', '_namePrefix' => 'seo:admin:'], function ($routes) {
+                $routes->fallbacks('DashedRoute');
+            });
+        }
     }
 
     /**
