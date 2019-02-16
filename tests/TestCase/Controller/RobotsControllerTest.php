@@ -57,6 +57,7 @@ class RobotsControllerTest extends IntegrationTestCase
 
     /**
      * Test index method
+     * @return void
      */
     public function testIndex()
     {

@@ -22,6 +22,8 @@ class SitemapController extends Controller
     /**
      * Sitemap index method
      * Renders a sitemap index xml of available sitemap scopes
+     *
+     * @return void
      * @TODO If sitemap count == 1, then render that sitemap directly instead of the index view
      */
     public function index()
@@ -41,7 +43,8 @@ class SitemapController extends Controller
      * Sitemap view method
      * Renders a list of sitemap locations for given scope in xml format
      *
-     * @param null $sitemap
+     * @param null $sitemap Sitemap ID
+     * @return void
      */
     public function sitemap($sitemap = null)
     {

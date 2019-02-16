@@ -16,6 +16,7 @@ class RobotsController extends Controller
     /**
      * Generates robots.txt in webroot
      *
+     * @return \Cake\Network\Response
      * @todo Caching
      * @todo Collect user agent rules via event
      */

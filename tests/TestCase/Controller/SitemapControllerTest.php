@@ -26,7 +26,7 @@ class SitemapControllerTest extends IntegrationTestCase
         parent::setUp();
         EventManager::instance()->setEventList(new EventList());
         EventManager::instance()->addEventToList(new Event('Sitemap.get'));
-        EventManager::instance()->on('Sitemap.get', function(Event $event) {
+        EventManager::instance()->on('Sitemap.get', function (Event $event) {
             $event->subject()->add(new SitemapLocation('/foo', 0.8, time(), 'monthly'), 'test');
         });
     }
@@ -44,6 +44,7 @@ class SitemapControllerTest extends IntegrationTestCase
 
     /**
      * Test index action
+     * @return void
      */
     public function testIndex()
     {
