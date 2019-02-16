@@ -66,7 +66,7 @@ class RobotsControllerTest extends IntegrationTestCase
         $this->assertContentType('text/plain; charset=UTF-8');
 
         $sitemapUrl = Router::url($this->testConfig['Seo']['Sitemap']['indexUrl']);
-        $expected = "Sitemap: " .  $sitemapUrl . "\n";
+        $expected = "Sitemap: " . $sitemapUrl . "\n";
         $this->assertResponseContains($expected);
 
         $expected = "User-agent: *\nDisallow: /admin/";
