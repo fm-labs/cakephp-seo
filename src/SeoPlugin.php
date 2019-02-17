@@ -33,7 +33,6 @@ class SeoPlugin implements EventListenerInterface
     public function buildSettings(Event $event)
     {
         if ($event->subject() instanceof SettingsManager) {
-
             $event->subject()->add('Seo', [
                 'Google.Analytics.trackingId' => [
                     'type' => 'string',

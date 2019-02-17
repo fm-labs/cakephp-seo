@@ -28,7 +28,6 @@ class GoogleAnalyticsHelper extends Helper
 
         $html = "";
         if ($trackingId && !$disabled) {
-
             $html = $this->_View->element('Seo.Tracking/google_' . $this->config('implementation'), ['trackingId' => $trackingId]);
 
             // disable in debug mode
