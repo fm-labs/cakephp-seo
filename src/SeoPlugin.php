@@ -2,9 +2,12 @@
 
 namespace Seo;
 
+use Banana\Application;
+use Banana\Plugin\BasePlugin;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
-use Cake\Routing\Router;
+use Cake\Event\EventManager;
+use Cake\Routing\RouteBuilder;
 use Settings\SettingsManager;
 
 /**
@@ -12,8 +15,21 @@ use Settings\SettingsManager;
  *
  * @package Seo
  */
-class SeoPlugin implements EventListenerInterface
+class SeoPlugin extends BasePlugin implements EventListenerInterface
 {
+    protected $_name = "Seo";
+
+    public function bootstrap(Application $app)
+    {
+        parent::bootstrap($app);
+
+        EventManager::instance()->on($this);
+    }
+
+    public function backendRoutes(RouteBuilder $routes)
+    {
+        $routes->fallbacks('DashedRoute');
+    }
 
     /**
      * @return array
@@ -22,45 +38,29 @@ class SeoPlugin implements EventListenerInterface
     {
         return [
             'Settings.build' => 'buildSettings',
-            'Backend.Menu.build' => 'buildBackendMenu',
-            'Backend.Routes.build' => 'buildBackendRoutes'
+            'Backend.Menu.build.admin_primary' => 'buildBackendMenu',
         ];
     }
 
     /**
      * @param Event $event
      */
-    public function buildSettings(Event $event)
+    public function buildSettings(Event $event, SettingsManager $settingsManager)
     {
-        if ($event->subject() instanceof SettingsManager) {
-            $event->subject()->add('Seo', [
-                'Google.Analytics.trackingId' => [
-                    'type' => 'string',
-                ],
-            ]);
-        }
-    }
-
-    /**
-     * Build backend plugin routes
-     * @return void
-     */
-    public function buildBackendRoutes()
-    {
-        if (\Configure::read('Debug')) {
-            Router::scope('/seo/admin', ['plugin' => 'Seo', 'prefix' => 'admin', '_namePrefix' => 'seo:admin:'], function ($routes) {
-                $routes->fallbacks('DashedRoute');
-            });
-        }
+        $settingsManager->add('Seo', [
+            'Google.Analytics.trackingId' => [
+                'type' => 'string',
+            ],
+        ]);
     }
 
     /**
      * @param Event $event
      * @return void
      */
-    public function buildBackendMenu(Event $event)
+    public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)
     {
-        $event->subject()->addItem([
+        $menu->addItem([
             'title' => 'Seo',
             'url' => ['plugin' => 'Seo', 'controller' => 'Dashboard', 'action' => 'index'],
             'data-icon' => 'line-chart',

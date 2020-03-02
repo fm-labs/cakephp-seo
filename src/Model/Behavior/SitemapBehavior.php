@@ -49,10 +49,6 @@ class SitemapBehavior extends Behavior
      */
     public function findSitemap(Query $query, array $options = [])
     {
-        if (method_exists($this->_table, 'findSitemap')) {
-            return call_user_func([$this->_table, 'findSitemap'], $query);
-        }
-
         return $this->formatSitemap($query, $options);
     }
 
