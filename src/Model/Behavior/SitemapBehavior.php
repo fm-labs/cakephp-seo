@@ -63,7 +63,7 @@ class SitemapBehavior extends Behavior
     {
         return $query->formatResults(function (ResultSetInterface $results) use ($options) {
             $locations = [];
-            $fields = $this->config('fields');
+            $fields = $this->getConfig('fields');
             foreach ($results as $entity) {
                 try {
                     $location = $entity[$fields['loc']];

@@ -5,8 +5,8 @@ use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\NotFoundException;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 use Seo\Sitemap\SitemapLocationsCollector;
 
@@ -34,7 +34,7 @@ class SitemapController extends Controller
             $indexUrls[] = ['loc' => Router::url(['action' => 'sitemap', '_ext' => 'xml', $sitemap])];
         }
 
-        $this->viewBuilder()->className('Seo.SitemapXml');
+        $this->viewBuilder()->setClassName('Seo.SitemapXml');
         $this->set('type', 'index');
         $this->set('locations', $indexUrls);
     }
@@ -57,7 +57,7 @@ class SitemapController extends Controller
             throw new NotFoundException();
         }
 
-        $this->viewBuilder()->className('Seo.SitemapXml');
+        $this->viewBuilder()->setClassName('Seo.SitemapXml');
         $this->set('locations', $sitemaps[$sitemap]);
     }
 
@@ -72,13 +72,13 @@ class SitemapController extends Controller
         if (!$sitemaps) {
             # Collect sitemaps via collector event
             // Example event listener:
-            // $this->eventManager()->on('Sitemap.get', function(Event $event) {
-            //    $event->subject()->add(new SitemapLocation(['controller' => 'Foo', 'action' => 'bar']));
+            // $this->getEventManager()->on('Sitemap.get', function(Event $event) {
+            //    $event->getSubject()->add(new SitemapLocation(['controller' => 'Foo', 'action' => 'bar']));
             // });
 
             $collector = new SitemapLocationsCollector();
             $event = new Event('Sitemap.get', $collector);
-            $this->eventManager()->dispatch($event);
+            $this->getEventManager()->dispatch($event);
 
             $sitemaps = $collector->toArray();
 

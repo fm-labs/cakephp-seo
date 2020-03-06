@@ -20,7 +20,7 @@ class SeoMetaController extends AppController
 
     /**
      * @param Event $event
-     * @return \Cake\Network\Response|null|void
+     * @return \Cake\Http\Response|null|void
      */
     public function beforeFilter(Event $event)
     {
@@ -43,16 +43,16 @@ class SeoMetaController extends AppController
     public function index()
     {
         $tables = $this->_metaTables;
-        $table = $this->request->query('table');
+        $table = $this->request->getQuery('table');
 
         $contents = $metas = null;
         if (isset($this->_metaTables[$table])) {
             $tableOpt = $this->_metaTables[$table];
 
-            $Table = TableRegistry::get($table);
+            $Table = TableRegistry::getTableLocator()->get($table);
             $contents = $Table->find('list', $tableOpt)->all()->toArray();
 
-            $Metas = TableRegistry::get('Content.PageMetas');
+            $Metas = TableRegistry::getTableLocator()->get('Content.PageMetas');
             $metas = $Metas->find()->where(['model' => $table])->all();
 
             foreach ($metas as $meta) {

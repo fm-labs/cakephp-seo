@@ -28,7 +28,7 @@ class GoogleAnalyticsHelper extends Helper
 
         $html = "";
         if ($trackingId && !$disabled) {
-            $html = $this->_View->element('Seo.Tracking/google_' . $this->config('implementation'), ['trackingId' => $trackingId]);
+            $html = $this->_View->element('Seo.Tracking/google_' . $this->getConfig('implementation'), ['trackingId' => $trackingId]);
 
             // disable in debug mode
             if (Configure::read('debug')) {
@@ -37,6 +37,6 @@ class GoogleAnalyticsHelper extends Helper
             }
         }
 
-        $this->_View->assign($this->config('block'), $html);
+        $this->_View->assign($this->getConfig('block'), $html);
     }
 }
