@@ -16,10 +16,9 @@ class SitemapXmlView extends View
      */
     public function initialize()
     {
-        $cacheDuration = '+1 day';
-
-        $this->response->type('application/xml');
-        $this->response->cache(mktime(0, 0, 0, date('m'), date('d'), date('Y')), $cacheDuration);
+        $this->setResponse($this->getResponse()
+            ->withType('application/xml')
+            ->withCache(mktime(0, 0, 0, date('m'), date('d'), date('Y')), '+1 day'));
     }
 
     /**
@@ -29,8 +28,8 @@ class SitemapXmlView extends View
      */
     public function render($view = null, $layout = null)
     {
-        $this->viewPath = 'Sitemap';
-        $this->subDir = 'xml';
+        $this->setTemplatePath('Sitemap');
+        $this->setSubDir('xml');
 
         return parent::render($view, false);
     }

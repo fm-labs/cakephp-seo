@@ -5,14 +5,18 @@ namespace Seo\Test\TestCase\Controller;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * Class RobotsControllerTest
  *
  * @package Seo\Test\TestCase\Controller
  */
-class RobotsControllerTest extends IntegrationTestCase
+class RobotsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
      * @var array
      */
@@ -25,7 +29,7 @@ class RobotsControllerTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->useHttpServer(true);
+        //$this->useHttpServer(true);
         $this->testConfig = [
             'Seo' => [
                 'Sitemap' => [
@@ -61,10 +65,11 @@ class RobotsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->get('/robots.txt');
+        //$this->get('/robots.txt');
+        $this->get(['plugin' => 'Seo', 'controller' => 'Robots', 'action' => 'index']);
 
         $this->assertResponseOk();
-        $this->assertContentType('text/plain; charset=UTF-8');
+        $this->assertContentType('text/plain');
 
         $sitemapUrl = Router::url($this->testConfig['Seo']['Sitemap']['indexUrl']);
         $expected = "Sitemap: " . $sitemapUrl . "\n";
@@ -73,7 +78,7 @@ class RobotsControllerTest extends IntegrationTestCase
         $expected = "User-agent: *\nDisallow: /admin/";
         $this->assertResponseContains($expected);
 
-        $response = $this->_response->body();
+        $response = $this->_response->getBody();
         $expected = [
             'Sitemap: ' . $sitemapUrl,
             '',

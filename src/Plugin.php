@@ -4,6 +4,7 @@ namespace Seo;
 
 use Banana\Application;
 use Banana\Plugin\BasePlugin;
+use Cake\Core\PluginApplicationInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -15,11 +16,11 @@ use Settings\SettingsManager;
  *
  * @package Seo
  */
-class SeoPlugin extends BasePlugin implements EventListenerInterface
+class Plugin extends BasePlugin implements EventListenerInterface
 {
     protected $_name = "Seo";
 
-    public function bootstrap(Application $app)
+    public function bootstrap(PluginApplicationInterface $app)
     {
         parent::bootstrap($app);
 

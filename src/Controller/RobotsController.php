@@ -48,9 +48,8 @@ class RobotsController extends Controller
             }
         }
 
-        $this->response->type('text/plain');
-        $this->response->body(trim(join("\n", $lines)));
-
-        return $this->response;
+        return $this->getResponse()
+            ->withType('text/plain')
+            ->withStringBody(trim(join("\n", $lines)));
     }
 }

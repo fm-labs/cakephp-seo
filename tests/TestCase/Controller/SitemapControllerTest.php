@@ -48,10 +48,11 @@ class SitemapControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->get('/sitemap.xml');
+        //$this->get('/sitemap.xml');
+        $this->get(['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'index']);
 
         $this->assertResponseOk();
-        $this->assertContentType('application/xml; charset=UTF-8');
+        $this->assertContentType('application/xml');
 
         $expectedSitemapUrl = Router::url('/sitemap-test.xml', true);
         $expectedXml = <<<XML
@@ -63,6 +64,6 @@ class SitemapControllerTest extends IntegrationTestCase
 </sitemapindex>
 XML;
         $expectedXml = sprintf($expectedXml, $expectedSitemapUrl);
-        $this->assertXmlStringEqualsXmlString($expectedXml, $this->_response->body());
+        $this->assertXmlStringEqualsXmlString($expectedXml, (string)$this->_response->getBody());
     }
 }
