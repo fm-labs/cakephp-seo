@@ -23,13 +23,13 @@ class SitemapBehavior extends Behavior
             'loc'           => 'sitemap_loc',       // fallback to url
             'priority'      => 'sitemap_priority',  // fallback to default value
             'lastmod'       => 'sitemap_lastmod',   // fallback to modified
-            'changefreq'    => 'sitemap_changefreq' // fallback to default value
+            'changefreq'    => 'sitemap_changefreq', // fallback to default value
         ],
         'implementedMethods' => [
         ],
         'implementedFinders' => [
-            'sitemap' => 'findSitemap'
-        ]
+            'sitemap' => 'findSitemap',
+        ],
     ];
 
     /**

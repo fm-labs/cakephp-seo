@@ -2,17 +2,17 @@
 return [
     'Seo' => [
         'Sitemap' => [
-            'indexUrl' => null
+            'indexUrl' => null,
         ],
         'Robots' => [
             '*' => [
                 '/admin/',
-            ]
+            ],
         ],
         'Google' => [
             'Analytics' => [
-                'trackingId' => ''
-            ]
+                'trackingId' => '',
+            ],
         ],
-    ]
+    ],
 ];

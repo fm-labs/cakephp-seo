@@ -33,7 +33,7 @@ class RobotsControllerTest extends TestCase
         $this->testConfig = [
             'Seo' => [
                 'Sitemap' => [
-                    'indexUrl' => '/sitemap-test-url.xml'
+                    'indexUrl' => '/sitemap-test-url.xml',
                 ],
                 'Robots' => [
                     '*' => [
@@ -42,8 +42,8 @@ class RobotsControllerTest extends TestCase
                     'GoogleBot' => [
                         '/no-google/',
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
         Configure::write($this->testConfig);
     }
@@ -86,7 +86,7 @@ class RobotsControllerTest extends TestCase
             'Disallow: /admin/',
             '',
             'User-agent: GoogleBot',
-            'Disallow: /no-google/'
+            'Disallow: /no-google/',
         ];
         $this->assertEquals($expected, explode("\n", $response));
     }

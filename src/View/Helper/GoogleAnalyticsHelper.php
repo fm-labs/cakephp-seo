@@ -15,7 +15,7 @@ class GoogleAnalyticsHelper extends Helper
 {
     protected $_defaultConfig = [
         'implementation' => 'gtag', // 'gtag' or 'analytics'
-        'block' => 'google_analytics'
+        'block' => 'google_analytics',
     ];
 
     /**
