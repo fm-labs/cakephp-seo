@@ -2,7 +2,6 @@
 
 namespace Seo;
 
-use Banana\Application;
 use Banana\Plugin\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\Event;
@@ -18,13 +17,39 @@ use Settings\SettingsManager;
  */
 class Plugin extends BasePlugin implements EventListenerInterface
 {
-    protected $_name = "Seo";
-
     public function bootstrap(PluginApplicationInterface $app)
     {
-        parent::bootstrap($app);
-
         EventManager::instance()->on($this);
+    }
+
+    public function routes($routes)
+    {
+        //Router::extensions(['xml']);
+        // robots.txt
+        $routes->connect(
+            '/robots.txt',
+            ['plugin' => 'Seo', 'controller' => 'Robots', 'action' => 'index'],
+            ['_name' => 'seo:robots']
+        );
+
+        // sitemap.xml
+        $routes->connect(
+            '/sitemap',
+            ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'index'],
+            ['_name' => 'seo:sitemap', '_ext' => ['xml']]
+        );
+
+        // paged sitemaps
+        $routes->connect(
+            '/sitemap-:sitemap-:page',
+            ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
+            ['pass' => ['sitemap', 'page'], '_ext' => ['xml']]
+        );
+        $routes->connect(
+            '/sitemap-:sitemap',
+            ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
+            ['pass' => ['sitemap'], '_ext' => ['xml']]
+        );
     }
 
     public function backendRoutes(RouteBuilder $routes)

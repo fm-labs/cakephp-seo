@@ -13,6 +13,22 @@ use Cake\Routing\Router;
  */
 class RobotsController extends Controller
 {
+    protected $defaultRobotRules = [
+        '*' => [
+            '/user/',
+            '/login/',
+            '/logout/',
+            '/wp-admin/',
+            '/administrator/',
+            '/adm/',
+            '/admin/',
+            '/system/',
+            '/cache/',
+            '/tmp/',
+            '/private/'
+        ]
+    ];
+
     /**
      * Generates robots.txt in webroot
      *
@@ -35,10 +51,11 @@ class RobotsController extends Controller
         }
 
         // user agent rules
-        if (Configure::check('Seo.Robots') && !Configure::read('Seo.Robots.disable')) {
-            foreach ((array)Configure::read('Seo.Robots') as $agent => $rules) {
+        $rules = (Configure::check('Seo.Robots')) ? Configure::read('Seo.Robots') : $this->defaultRobotRules;
+        if ($rules && !isset($rules['disabled'])) {
+            foreach ($rules as $agent => $_rules) {
                 $lines[] = 'User-agent: ' . $agent;
-                foreach ($rules as $location) {
+                foreach ($_rules as $location) {
                     try {
                         $lines[] = 'Disallow: ' . Router::url($location, false);
                     } catch (\Exception $ex) {
