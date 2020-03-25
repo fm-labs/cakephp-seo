@@ -7,7 +7,8 @@ use Cake\Event\Event;
 use Cake\Event\EventList;
 use Cake\Event\EventManager;
 use Cake\Routing\Router;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use Seo\Sitemap\SitemapLocation;
 
 /**
@@ -15,8 +16,9 @@ use Seo\Sitemap\SitemapLocation;
  *
  * @package Seo\Test\TestCase\Controller
  */
-class SitemapControllerTest extends IntegrationTestCase
+class SitemapControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     /**
      * {@inheritDoc}
