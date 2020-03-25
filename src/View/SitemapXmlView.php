@@ -16,7 +16,7 @@ class SitemapXmlView extends View
      * Initialize.
      * Set response type and caching
      */
-    public function initialize()
+    public function initialize(): void)
     {
         $this->setResponse($this->getResponse()
             ->withType('application/xml')
@@ -28,7 +28,7 @@ class SitemapXmlView extends View
      * @param null $layout
      * @return null|string
      */
-    public function render($view = null, $layout = null)
+    public function render(?string $template = null, $layout = null): string
     {
         $this->setTemplatePath('Sitemap');
         $this->setSubDir('xml');
