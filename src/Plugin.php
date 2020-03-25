@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo;
 
@@ -69,7 +70,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     }
 
     /**
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      */
     public function buildSettings(Event $event, SettingsManager $settingsManager)
     {
@@ -81,7 +82,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     }
 
     /**
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      * @return void
      */
     public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)

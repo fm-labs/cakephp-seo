@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace Seo\Controller;
 
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
-use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
@@ -18,7 +19,6 @@ use Seo\Sitemap\SitemapLocationsCollector;
  */
 class SitemapController extends Controller
 {
-
     /**
      * Sitemap index method
      * Renders a sitemap index xml of available sitemap scopes

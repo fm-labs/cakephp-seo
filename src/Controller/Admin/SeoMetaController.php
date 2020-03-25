@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo\Controller\Admin;
 
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
-use Cake\Event\Event;
 
 /**
  * Class SeoMetaController
@@ -19,7 +19,7 @@ class SeoMetaController extends AppController
     protected $_metaTables = [];
 
     /**
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      * @return \Cake\Http\Response|null|void
      */
     public function beforeFilter(\Cake\Event\EventInterface $event)

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo\Model\Behavior;
 
@@ -43,9 +44,9 @@ class SitemapBehavior extends Behavior
     }
 
     /**
-     * @param Query $query
+     * @param \Cake\ORM\Query $query
      * @param array $options
-     * @return Query
+     * @return \Cake\ORM\Query
      */
     public function findSitemap(Query $query, array $options = [])
     {
@@ -67,7 +68,7 @@ class SitemapBehavior extends Behavior
             foreach ($results as $entity) {
                 try {
                     $location = $entity[$fields['loc']];
-                    $location = ($location) ?: $entity['url'];
+                    $location = $location ?: $entity['url'];
                     if (!$location) {
                         continue;
                     }
@@ -75,8 +76,8 @@ class SitemapBehavior extends Behavior
                     $priority = $entity[$fields['priority']];
 
                     $lastmod = $entity[$fields['lastmod']];
-                    $lastmod = ($lastmod) ?: $entity['modified'];
-                    $lastmod = ($lastmod) ?: $entity['updated'];
+                    $lastmod = $lastmod ?: $entity['modified'];
+                    $lastmod = $lastmod ?: $entity['updated'];
 
                     $frequency = $entity[$fields['changefreq']];
 

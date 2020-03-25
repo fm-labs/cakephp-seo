@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo\Controller;
 
@@ -25,8 +26,8 @@ class RobotsController extends Controller
             '/system/',
             '/cache/',
             '/tmp/',
-            '/private/'
-        ]
+            '/private/',
+        ],
     ];
 
     /**
@@ -44,14 +45,14 @@ class RobotsController extends Controller
         $lines = [];
         if (!Configure::read('Seo.Sitemap.disable') && !Configure::read('Seo.Robots.disable')) {
             $sitemapUrl = Configure::read('Seo.Sitemap.indexUrl');
-            $sitemapUrl = ($sitemapUrl) ?: ['_name' => 'seo:sitemap', '_ext' => 'xml'];
+            $sitemapUrl = $sitemapUrl ?: ['_name' => 'seo:sitemap', '_ext' => 'xml'];
 
             $lines[] = 'Sitemap: ' . Router::url($sitemapUrl, true);
             $lines[] = '';
         }
 
         // user agent rules
-        $rules = (Configure::check('Seo.Robots')) ? Configure::read('Seo.Robots') : $this->defaultRobotRules;
+        $rules = Configure::check('Seo.Robots') ? Configure::read('Seo.Robots') : $this->defaultRobotRules;
         if ($rules && !isset($rules['disabled'])) {
             foreach ($rules as $agent => $_rules) {
                 $lines[] = 'User-agent: ' . $agent;

@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo\View\Helper;
 
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\View\Helper;
-use Cake\Core\Configure;
 
 /**
  * Class GoogleAnalyticsHelper
@@ -19,7 +20,7 @@ class GoogleAnalyticsHelper extends Helper
     ];
 
     /**
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      */
     public function beforeLayout(Event $event)
     {

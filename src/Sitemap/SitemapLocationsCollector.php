@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Seo\Sitemap;
 
 use Cake\Collection\Collection;
-use Seo\Sitemap\SitemapLocation;
 
 /**
  * Class SitemapLocationsCollector
@@ -20,7 +20,7 @@ class SitemapLocationsCollector
     protected $_locations = [];
 
     /**
-     * @param SitemapLocation|array $loc
+     * @param \Seo\Sitemap\SitemapLocation|array $loc
      * @param string $scope Sitemap scope. Defaults to 'default'.
      * @return $this
      */
@@ -53,7 +53,7 @@ class SitemapLocationsCollector
 
     /**
      * Unused
-     * @return Collection
+     * @return \Cake\Collection\Collection
      */
     public function toCollections()
     {
