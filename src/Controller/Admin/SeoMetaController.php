@@ -22,7 +22,7 @@ class SeoMetaController extends AppController
      * @param Event $event
      * @return \Cake\Http\Response|null|void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
 

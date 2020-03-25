@@ -17,12 +17,12 @@ use Settings\SettingsManager;
  */
 class Plugin extends BasePlugin implements EventListenerInterface
 {
-    public function bootstrap(PluginApplicationInterface $app)
+    public function bootstrap(PluginApplicationInterface $app): void
     {
         EventManager::instance()->on($this);
     }
 
-    public function routes($routes)
+    public function routes(\Cake\Routing\RouteBuilder $routes): void
     {
         //Router::extensions(['xml']);
         // robots.txt
@@ -60,7 +60,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     /**
      * @return array
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'Settings.build' => 'buildSettings',
