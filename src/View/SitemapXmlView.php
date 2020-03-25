@@ -24,7 +24,7 @@ class SitemapXmlView extends View
     }
 
     /**
-     * @param null $view
+     * @param null $template
      * @param null $layout
      * @return null|string
      */
