@@ -87,10 +87,12 @@ class Plugin extends BasePlugin implements EventListenerInterface
      */
     public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)
     {
+        /*
         $menu->addItem([
             'title' => 'Seo',
             'url' => ['plugin' => 'Seo', 'controller' => 'Dashboard', 'action' => 'index'],
             'data-icon' => 'line-chart',
         ]);
+        */
     }
 }

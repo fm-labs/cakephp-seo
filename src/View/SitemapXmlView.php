@@ -13,26 +13,23 @@ use Cake\View\View;
 class SitemapXmlView extends View
 {
     /**
-     * Initialize.
-     * Set response type and caching
+     * {@inheritDoc}
      */
-    public function initialize(): void)
+    public function initialize(): void
     {
         $this->setResponse($this->getResponse()
             ->withType('application/xml')
-            ->withCache(mktime(0, 0, 0, date('m'), date('d'), date('Y')), '+1 day'));
+            ->withCache(time(), '+1 day'));
     }
 
     /**
-     * @param null $template
-     * @param null $layout
-     * @return null|string
+     * {@inheritDoc}
      */
     public function render(?string $template = null, $layout = null): string
     {
         $this->setTemplatePath('Sitemap');
         $this->setSubDir('xml');
 
-        return parent::render($view, false);
+        return parent::render($template, false);
     }
 }

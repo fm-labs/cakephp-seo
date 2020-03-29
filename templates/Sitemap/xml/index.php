@@ -2,7 +2,7 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<?php foreach($this->get('locations') as $location):?>
 		<sitemap>
-			<loc><?= $this->Url->build($location['loc'], true); ?></loc>
+			<loc><?= $this->Url->build($location['loc'], ['fullBase' => true]); ?></loc>
 		</sitemap>
 	<?php endforeach; ?>
 </sitemapindex>
