@@ -48,6 +48,7 @@ class SitemapControllerTest extends TestCase
     /**
      * Test index action
      * @return void
+     * @group integration
      */
     public function testIndex()
     {

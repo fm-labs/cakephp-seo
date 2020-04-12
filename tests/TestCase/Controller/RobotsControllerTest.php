@@ -62,6 +62,7 @@ class RobotsControllerTest extends TestCase
     /**
      * Test index method
      * @return void
+     * @group integration
      */
     public function testIndex()
     {
