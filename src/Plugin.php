@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Seo;
 
-use Banana\Plugin\BasePlugin;
+use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Cake\Routing\RouteBuilder;
 use Settings\SettingsManager;
 
 /**
@@ -18,11 +17,17 @@ use Settings\SettingsManager;
  */
 class Plugin extends BasePlugin implements EventListenerInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function bootstrap(PluginApplicationInterface $app): void
     {
         EventManager::instance()->on($this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function routes(\Cake\Routing\RouteBuilder $routes): void
     {
         //Router::extensions(['xml']);
@@ -51,48 +56,36 @@ class Plugin extends BasePlugin implements EventListenerInterface
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
             ['pass' => ['sitemap'], '_ext' => ['xml']]
         );
-    }
 
-    public function backendRoutes(RouteBuilder $routes)
-    {
-        $routes->fallbacks('DashedRoute');
+        // stylesheets
+        $routes->connect(
+            '/sitemap/style/:name',
+            ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'style'],
+            ['pass' => ['name'], '_ext' => ['xsl']]
+        );
     }
 
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function implementedEvents(): array
     {
         return [
             'Settings.build' => 'buildSettings',
-            'Backend.Menu.build.admin_primary' => 'buildBackendMenu',
         ];
     }
 
     /**
-     * @param \Cake\Event\Event $event
+     * @param \Cake\Event\Event $event Event object
+     * @param \Settings\SettingsManager $settingsManager SettingsManager object
+     * @return void
      */
-    public function buildSettings(Event $event, SettingsManager $settingsManager)
+    public function buildSettings(Event $event, SettingsManager $settingsManager): void
     {
         $settingsManager->add('Seo', [
             'Google.Analytics.trackingId' => [
                 'type' => 'string',
             ],
         ]);
-    }
-
-    /**
-     * @param \Cake\Event\Event $event
-     * @return void
-     */
-    public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)
-    {
-        /*
-        $menu->addItem([
-            'title' => 'Seo',
-            'url' => ['plugin' => 'Seo', 'controller' => 'Dashboard', 'action' => 'index'],
-            'data-icon' => 'line-chart',
-        ]);
-        */
     }
 }

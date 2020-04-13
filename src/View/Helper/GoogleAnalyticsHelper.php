@@ -20,21 +20,28 @@ class GoogleAnalyticsHelper extends Helper
     ];
 
     /**
-     * @param \Cake\Event\Event $event
+     * @param \Cake\Event\Event $event Event object
+     * @return void
      */
-    public function beforeLayout(Event $event)
+    public function beforeLayout(Event $event): void
     {
         $trackingId = Configure::read('Seo.Google.Analytics.trackingId');
-        $disabled = Configure::read('Seo.Tracking.disabled') || $this->_View->get('_no_tracking') || $this->_View->get('_private');
+        $disabled = Configure::read('Seo.Tracking.disabled')
+            || $this->_View->get('_no_tracking')
+            || $this->_View->get('_private');
 
         $html = "";
         if ($trackingId && !$disabled) {
-            $html = $this->_View->element('Seo.Tracking/google_' . $this->getConfig('implementation'), ['trackingId' => $trackingId]);
+            $html = $this->_View->element(
+                'Seo.Tracking/google_' . $this->getConfig('implementation'),
+                ['trackingId' => $trackingId]
+            );
 
             // disable in debug mode
             if (Configure::read('debug')) {
+                $devMsg = "Seo: Google analytics tracking script has been disabled in debug mode";
                 $html = "<!-- " . $html . " -->";
-                $html .= "<script>console.log('Seo: Google analytics tracking script has been disabled in debug mode')</script>";
+                $html .= sprintf("<script>console.log('%s')</script>", $devMsg);
             }
         }
 

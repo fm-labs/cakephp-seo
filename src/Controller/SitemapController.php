@@ -3,19 +3,16 @@ declare(strict_types=1);
 
 namespace Seo\Controller;
 
-use Cake\Cache\Cache;
 use Cake\Controller\Controller;
-use Cake\Event\Event;
+use Cake\Core\Plugin;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
-use Cake\Routing\Router;
-use Seo\Sitemap\SitemapLocationsCollector;
+use Seo\Sitemap\Sitemap;
+use Seo\Sitemap\SitemapUrl;
 
 /**
  * Class SitemapController
  * @package Seo\Controller
- *
- * @todo Use RequestHandler
  */
 class SitemapController extends Controller
 {
@@ -28,64 +25,58 @@ class SitemapController extends Controller
      */
     public function index()
     {
-        $sitemaps = $this->_getSitemaps();
-        $indexUrls = [];
-        foreach (array_keys($sitemaps) as $sitemap) {
-            $indexUrls[] = ['loc' => Router::url(['action' => 'sitemap', '_ext' => 'xml', $sitemap])];
-        }
-
         $this->viewBuilder()->setClassName('Seo.SitemapXml');
+
+        $indexUrls = function () {
+            foreach (Sitemap::configured() as $sitemapId) {
+                yield new SitemapUrl(['action' => 'sitemap', '_ext' => 'xml', $sitemapId]);
+            }
+        };
+
+        $this->set('urls', $indexUrls());
         $this->set('type', 'index');
-        $this->set('locations', $indexUrls);
+        $this->set('style', \Cake\Core\Configure::read('Seo.Sitemap.style'));
     }
 
     /**
      * Sitemap view method
      * Renders a list of sitemap locations for given scope in xml format
      *
-     * @param null $sitemap Sitemap ID
+     * @param string|null $sitemap Sitemap ID
      * @return void
+     * @throws \Exception
      */
-    public function sitemap($sitemap = null)
+    public function sitemap(?string $sitemap = null): void
     {
+        $this->viewBuilder()->setClassName('Seo.SitemapXml');
+
         if (!$sitemap) {
             throw new BadRequestException();
         }
 
-        $sitemaps = $this->_getSitemaps();
-        if (!array_key_exists($sitemap, $sitemaps)) {
-            throw new NotFoundException();
-        }
-
-        $this->viewBuilder()->setClassName('Seo.SitemapXml');
-        $this->set('locations', $sitemaps[$sitemap]);
+        $urls = Sitemap::getUrls($sitemap);
+        $this->set('urls', $urls);
+        $this->set('type', 'sitemap');
+        $this->set('style', \Cake\Core\Configure::read('Seo.Sitemap.style'));
     }
 
     /**
-     * @return array
+     * @param string $name Stylesheet name
+     * @return \Cake\Http\Response
      */
-    protected function _getSitemaps()
+    public function style(string $name): \Cake\Http\Response
     {
-        $cacheKey = 'sitemaps';
-        $sitemaps = Cache::read($cacheKey);
-
-        if (!$sitemaps) {
-            # Collect sitemaps via collector event
-            // Example event listener:
-            // $this->getEventManager()->on('Sitemap.get', function(Event $event) {
-            //    $event->getSubject()->add(new SitemapLocation(['controller' => 'Foo', 'action' => 'bar']));
-            // });
-
-            $collector = new SitemapLocationsCollector();
-            $event = new Event('Sitemap.get', $collector);
-            $this->getEventManager()->dispatch($event);
-
-            $sitemaps = $collector->toArray();
-
-            //@TODO Enable sitemap caching
-            Cache::write($cacheKey, $sitemaps);
+        $file = Plugin::path('Seo') . 'resources' . DS . 'stylesheet' . DS . 'sitemap-' . $name . '.xsl';
+        if (!file_exists($file)) {
+            throw new NotFoundException();
         }
 
-        return $sitemaps;
+        $this->getResponse()
+            ->setTypeMap('xsl', 'text/xsl');
+
+        return $this->getResponse()
+            ->withType('text/xsl')
+            //->withCache('+1 day')
+            ->withFile($file);
     }
 }

@@ -12,6 +12,15 @@ The recommended way to install composer packages is:
 - XML Sitemaps
 - Google Analytics Tracking
 
+
+## Stylesheets
+
+Built-in Stylesheets:
+
+* style-pedro: [pedroborges/xml-sitemap-stylesheet](https://github.com/pedroborges/xml-sitemap-stylesheet)
+* style-catcto : [catcto/sitemap-stylesheet](https://github.com/catcto/sitemap-stylesheet)
+
+
 ```
 composer require fm-labs/cakephp-seo
 ```

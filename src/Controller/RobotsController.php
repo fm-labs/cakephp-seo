@@ -44,8 +44,7 @@ class RobotsController extends Controller
         // sitemap
         $lines = [];
         if (!Configure::read('Seo.Sitemap.disable') && !Configure::read('Seo.Robots.disable')) {
-            $sitemapUrl = Configure::read('Seo.Sitemap.indexUrl');
-            $sitemapUrl = $sitemapUrl ?: ['_name' => 'seo:sitemap', '_ext' => 'xml'];
+            $sitemapUrl = Configure::read('Seo.Robots.sitemapUrl', ['_name' => 'seo:sitemap', '_ext' => 'xml']);
 
             $lines[] = 'Sitemap: ' . Router::url($sitemapUrl, true);
             $lines[] = '';

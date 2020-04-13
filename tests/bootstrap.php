@@ -32,3 +32,7 @@ if (file_exists($root . '/config/bootstrap.php')) {
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 \Cake\Core\Configure::write('App.namespace', 'Seo\Test\TestApp');
+
+\Seo\Sitemap\Sitemap::setConfig('default', [
+    'className' => \Seo\Test\TestApp\Sitemap\TestSitemapProvider::class,
+]);

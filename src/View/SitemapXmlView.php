@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Seo\View;
 
 use Cake\View\View;
+use Seo\Sitemap\Sitemap;
 
 /**
  * Class SitemapXmlView
@@ -27,9 +28,16 @@ class SitemapXmlView extends View
      */
     public function render(?string $template = null, $layout = null): string
     {
-        $this->setTemplatePath('Sitemap');
-        $this->setSubDir('xml');
+        $urls = $this->get('urls', []);
+        $type = $this->get('type', 'sitemap');
+        $style = $this->get('style', null);
 
-        return parent::render($template, false);
+        if ($type == 'index') {
+            $xml = Sitemap::buildSitemapIndexXml($urls, ['style' => $style]);
+        } elseif ($type == 'sitemap') {
+            $xml = Sitemap::buildSitemapXml($urls, ['style' => $style]);
+        }
+
+        return $xml->saveXML();
     }
 }

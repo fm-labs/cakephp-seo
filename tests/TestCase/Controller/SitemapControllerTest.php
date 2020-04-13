@@ -10,7 +10,7 @@ use Cake\Event\EventManager;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use Seo\Sitemap\SitemapLocation;
+use Seo\Sitemap\SitemapUrl;
 
 /**
  * Class SitemapControllerTest
@@ -30,7 +30,7 @@ class SitemapControllerTest extends TestCase
         EventManager::instance()->setEventList(new EventList());
         EventManager::instance()->addEventToList(new Event('Sitemap.get'));
         EventManager::instance()->on('Sitemap.get', function (Event $event) {
-            $event->getSubject()->add(new SitemapLocation('/foo', 0.8, time(), 'monthly'), 'test');
+            $event->getSubject()->add(new SitemapUrl('/foo', 0.8, time(), 'monthly'), 'test');
         });
     }
 

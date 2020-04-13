@@ -4,6 +4,9 @@
     "type": "cakephp-plugin",
     "require": {
         "php": ">=7.2",
+        "ext-xml": "*",
+        "ext-dom": "*",
+        "ext-simplexml": "*",
         "cakephp/cakephp": "^4.0"
     },
     "require-dev": {
@@ -19,6 +22,40 @@
             "Seo\\Test\\": "tests",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
+    },
+    "scripts": {
+        
+    },
+    "scripts": {
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "stan": "phpstan analyse src/",
+        "test": "phpunit --colors=always tests/",
+
+        "quick-test": "cakedev quick-test",
+        "quick-build": "cakedev quick-build",
+        "full-build": "cakedev full-build",
+        "static-analysis": "cakedev static-analysis",
+
+        "phpunit": "cakedev phpunit",
+        "phpunit-no-coverage": "cakedev phpunit-no-coverage",
+        "phpdox": "cakedev phpdox",
+        "pdepend": "cakedev pdepend",
+        "phpcbf": "cakedev phpcbf",
+        "phpcs": "cakedev phpcs",
+        "phpcs-ci": "cakedev phpcs-ci",
+        "phpmd": "cakedev phpmd",
+        "phpmd-ci": "cakedev phpmd-ci",
+        "phpcpd": "cakedev phpcpd",
+        "phpcpd-ci": "cakedev phpcpd-ci",
+        "phploc": "cakedev phploc",
+        "phploc-ci": "cakedev phploc-ci",
+        "phpstan": "cakedev phpstan",
+        "phpstan-ci": "cakedev phpstan-ci"
     },
     "minimum-stability": "dev",
     "prefer-stable": true
