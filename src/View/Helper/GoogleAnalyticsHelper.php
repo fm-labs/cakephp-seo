@@ -25,14 +25,17 @@ class GoogleAnalyticsHelper extends Helper
      */
     public function beforeLayout(Event $event): void
     {
+        /** @var \Cake\View\View $view */
+        $view = $event->getSubject();
+
         $trackingId = Configure::read('Seo.Google.Analytics.trackingId');
         $disabled = Configure::read('Seo.Tracking.disabled')
-            || $this->_View->get('_no_tracking')
-            || $this->_View->get('_private');
+            || $view->get('_no_tracking')
+            || $view->get('_private');
 
         $html = "";
         if ($trackingId && !$disabled) {
-            $html = $this->_View->element(
+            $html = $view->element(
                 'Seo.Tracking/google_' . $this->getConfig('implementation'),
                 ['trackingId' => $trackingId]
             );
@@ -45,6 +48,6 @@ class GoogleAnalyticsHelper extends Helper
             }
         }
 
-        $this->_View->assign($this->getConfig('block'), $html);
+        $event->getSubject()->assign($this->getConfig('block'), $html);
     }
 }

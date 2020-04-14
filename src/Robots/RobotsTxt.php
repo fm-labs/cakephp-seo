@@ -46,21 +46,29 @@ class RobotsTxt
         $this->setSitemap(null);
         $this->setHost(null);
         $this->setCrawlDelay(-1);
-        //$this->addRules($this->_defaultRules);
+        //$this->setRules($this->_defaultRules);
         $this->addRules($rules);
     }
 
     /**
-     * @param array $rules Robots rules [ 'UserAgentString' => ['/', '/not-allowed'] ]
-     * @param bool $merge Merge flag If TRUE, rules will be merged with existing rules. (Default: True)
+     * Set robots rules.
+     * @param array $rules Robots rules
      * @return $this
      */
-    public function addRules(array $rules, bool $merge = true)
+    public function setRules(array $rules)
     {
-        if (!$merge) {
-            $this->_rules = [];
-        }
+        $this->_rules = $rules;
 
+        return $this;
+    }
+
+    /**
+     * Add robots rules.
+     * @param array $rules Robots rules [ 'UserAgentString' => ['/allowed' => true, '/not-allowed' => false] ]
+     * @return $this
+     */
+    public function addRules(array $rules)
+    {
         foreach ($rules as $ua => $paths) {
             foreach ($paths as $path => $perm) {
                 $this->_rules[$ua][$path] = $perm;
@@ -185,6 +193,17 @@ class RobotsTxt
         }
 
         // rules
+        $rulesAdder = function ($rules) use (&$lines) {
+            foreach ($rules as $path => $perm) {
+                try {
+                    $url = Router::url($path, false);
+                    $permWord = $perm == self::ALLOW ? 'Allow' : 'Disallow';
+                    $lines[] = sprintf("%s: %s", $permWord, $url);
+                } catch (\Exception $ex) {
+                }
+            }
+        };
+
         foreach ($this->_rules as $ua => $rules) {
             $lines[] = sprintf("User-agent: %s", $ua);
             // crawl delay
@@ -195,21 +214,13 @@ class RobotsTxt
 
             // allow before disallow
             // https://en.wikipedia.org/wiki/Robots.txt#Allow_directive
-            foreach ([self::ALLOW, self::DISALLOW] as $perm) {
-                $_rules = array_filter($rules, function ($rule) use ($perm) {
-                    return $rule === $perm;
+            foreach ([self::ALLOW, self::DISALLOW] as $filter) {
+                $_rules = array_filter($rules, function ($rule) use ($filter) {
+                    return $rule === $filter;
                 });
 
                 ksort($rules);
-
-                foreach ($_rules as $path => $_perm) {
-                    try {
-                        $url = Router::url($path, false);
-                        $permWord = $perm == self::ALLOW ? 'Allow' : 'Disallow';
-                        $lines[] = sprintf("%s: %s", $permWord, $url);
-                    } catch (\Exception $ex) {
-                    }
-                }
+                $rulesAdder($rules);
             }
             $lines[] = '';
         }
