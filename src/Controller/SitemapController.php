@@ -7,6 +7,7 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Seo\Sitemap\Sitemap;
@@ -54,17 +55,19 @@ class SitemapController extends Controller
     {
         $this->viewBuilder()->setClassName('Seo.Sitemap');
 
-        if (!$scope) {
-            throw new BadRequestException();
+        if (!$scope || !Sitemap::getConfig($scope)) {
+            throw new NotFoundException();
         }
 
-        $provider = Sitemap::getProvider($scope);
-
-        $sitemap = new Sitemap();
-        $sitemap->addProvider($provider);
-
-        $this->set('sitemap', $sitemap);
-        $this->set('styleUrl', Configure::read('Seo.Sitemap.styleUrl'));
+        try {
+            $sitemap = new Sitemap();
+            $provider = Sitemap::getProvider($scope);
+            $sitemap->addProvider($provider);
+            $this->set('sitemap', $sitemap);
+            $this->set('styleUrl', Configure::read('Seo.Sitemap.styleUrl'));
+        } catch (\Exception $ex) {
+            throw new InternalErrorException($ex->getMessage());
+        }
     }
 
     /**
@@ -73,16 +76,16 @@ class SitemapController extends Controller
      */
     public function style(string $name): Response
     {
+        $this->getResponse()->setTypeMap('xsl', 'text/xsl');
+        $this->setResponse($this->getResponse()
+            ->withType('text/xsl'));
+
         $file = Plugin::path('Seo') . 'resources' . DS . 'stylesheet' . DS . 'sitemap-' . $name . '.xsl';
         if (!file_exists($file)) {
             throw new NotFoundException();
         }
 
-        $this->getResponse()
-            ->setTypeMap('xsl', 'text/xsl');
-
         return $this->getResponse()
-            ->withType('text/xsl')
             //->withCache('+1 day')
             ->withFile($file);
     }

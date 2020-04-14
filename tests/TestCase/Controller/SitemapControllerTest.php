@@ -99,12 +99,51 @@ XML;
      * @return void
      * @throws \Throwable
      */
+    public function testSitemapNotFound(): void
+    {
+        $this->get([
+            'plugin' => 'Seo',
+            'controller' => 'Sitemap',
+            'action' => 'sitemap', 'notfound',
+        ]);
+
+        $this->assertResponseError();
+        $this->assertResponseCode(404);
+
+        $this->get([
+            'plugin' => 'Seo',
+            'controller' => 'Sitemap',
+            'action' => 'sitemap',
+            'notfound',
+            '_ext' => 'txt',
+        ]);
+
+        $this->assertResponseError();
+        $this->assertResponseCode(404);
+    }
+
+    /**
+     * @return void
+     * @throws \Throwable
+     */
     public function testStyle(): void
     {
         $this->get(['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'style', 'pedro']);
 
         $this->assertResponseOk();
         $this->assertContentType('text/xsl');
+    }
+
+    /**
+     * @return void
+     * @throws \Throwable
+     */
+    public function testStyleNotFound(): void
+    {
+        $this->get(['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'style', 'notfound']);
+
+        $this->assertResponseError();
+        $this->assertResponseCode(404);
     }
 
     /**

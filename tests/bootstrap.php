@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Datasource\ConnectionManager;
 use Seo\Sitemap\Sitemap;
+use Seo\Test\App\Error\ExceptionRenderer;
 
 $findRoot = function ($root) {
     do {
@@ -46,6 +47,13 @@ Configure::write('App', [
         'templates' => [ROOT . 'templates' . DS]
     ],
     'encoding' => 'UTF-8'
+]);
+Configure::write('Error', [
+    'errorLevel' => E_ALL,
+    'exceptionRenderer' => ExceptionRenderer::class,
+    'skipLog' => [],
+    'log' => true,
+    'trace' => true,
 ]);
 
 Cache::setConfig([
