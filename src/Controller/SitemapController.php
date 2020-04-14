@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace Seo\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 use Seo\Sitemap\Sitemap;
 use Seo\Sitemap\SitemapIndex;
 use Seo\Sitemap\SitemapUrl;
@@ -22,7 +24,6 @@ class SitemapController extends Controller
      * Renders a sitemap index xml of available sitemap scopes
      *
      * @return void
-     * @TODO If sitemap count == 1, then render that sitemap directly instead of the index view
      */
     public function index()
     {
@@ -36,7 +37,7 @@ class SitemapController extends Controller
 
         $sitemap = new SitemapIndex();
         $sitemap->addProvider($indexUrls);
-        $sitemap->setStyleUrl(\Cake\Core\Configure::read('Seo.Sitemap.styleUrl'));
+        $sitemap->setStyleUrl(Configure::read('Seo.Sitemap.styleUrl'));
 
         $this->set('sitemap', $sitemap);
     }
@@ -63,14 +64,14 @@ class SitemapController extends Controller
         $sitemap->addProvider($provider);
 
         $this->set('sitemap', $sitemap);
-        $this->set('styleUrl', \Cake\Core\Configure::read('Seo.Sitemap.styleUrl'));
+        $this->set('styleUrl', Configure::read('Seo.Sitemap.styleUrl'));
     }
 
     /**
      * @param string $name Stylesheet name
      * @return \Cake\Http\Response
      */
-    public function style(string $name): \Cake\Http\Response
+    public function style(string $name): Response
     {
         $file = Plugin::path('Seo') . 'resources' . DS . 'stylesheet' . DS . 'sitemap-' . $name . '.xsl';
         if (!file_exists($file)) {
