@@ -20,7 +20,6 @@ class Plugin extends BasePlugin
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
-        EventManager::instance()->on($this);
     }
 
     /**

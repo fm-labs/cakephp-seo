@@ -219,8 +219,8 @@ class RobotsTxt
                     return $rule === $filter;
                 });
 
-                ksort($rules);
-                $rulesAdder($rules);
+                ksort($_rules);
+                $rulesAdder($_rules);
             }
             $lines[] = '';
         }
