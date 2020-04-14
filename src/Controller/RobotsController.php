@@ -51,7 +51,7 @@ class RobotsController extends Controller
         }
 
         // user agent rules
-        $rules = Configure::check('Seo.Robots') ? Configure::read('Seo.Robots') : $this->defaultRobotRules;
+        $rules = Configure::check('Seo.Robots.rules') ? Configure::read('Seo.Robots.rules') : $this->defaultRobotRules;
         if ($rules && !isset($rules['disabled'])) {
             foreach ($rules as $agent => $_rules) {
                 $lines[] = 'User-agent: ' . $agent;
@@ -65,8 +65,10 @@ class RobotsController extends Controller
             }
         }
 
-        return $this->getResponse()
+        debug($lines);
+
+        $this->setResponse($this->getResponse()
             ->withType('text/plain')
-            ->withStringBody(trim(join("\n", $lines)));
+            ->withStringBody(trim(join("\n", $lines))));
     }
 }

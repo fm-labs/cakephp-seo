@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Seo\Test\App\Application;
 
 /**
  * Class RobotsControllerTest
@@ -18,24 +19,17 @@ class RobotsControllerTest extends TestCase
     use IntegrationTestTrait;
 
     /**
-     * @var array
-     */
-    public $testConfig;
-
-    /**
      * {@inheritDoc}
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        //$this->useHttpServer(true);
-        $this->testConfig = [
-            'Seo' => [
-                'Sitemap' => [
-                    'indexUrl' => '/sitemap-test-url.xml',
-                ],
-                'Robots' => [
+        Configure::drop('Seo');
+        Configure::write('Seo', [
+            'Robots' => [
+                'sitemapUrl' => '/sitemap-test-url.xml',
+                'rules' => [
                     '*' => [
                         '/admin/',
                     ],
@@ -44,8 +38,9 @@ class RobotsControllerTest extends TestCase
                     ],
                 ],
             ],
-        ];
-        Configure::write($this->testConfig);
+        ]);
+
+        $this->configApplication(Application::class, []);
     }
 
     /**
@@ -68,18 +63,19 @@ class RobotsControllerTest extends TestCase
     {
         //$this->get('/robots.txt');
         $this->get(['plugin' => 'Seo', 'controller' => 'Robots', 'action' => 'index']);
-
         $this->assertResponseOk();
         $this->assertContentType('text/plain');
 
-        $sitemapUrl = Router::url($this->testConfig['Seo']['Sitemap']['indexUrl']);
+        $response = (string)$this->_response->getBody();
+        debug($response);
+
+        $sitemapUrl = Router::url(Configure::read('Seo.Robots.sitemapUrl'), true);
         $expected = "Sitemap: " . $sitemapUrl . "\n";
         $this->assertResponseContains($expected);
 
         $expected = "User-agent: *\nDisallow: /admin/";
         $this->assertResponseContains($expected);
 
-        $response = $this->_response->getBody();
         $expected = [
             'Sitemap: ' . $sitemapUrl,
             '',

@@ -4,13 +4,11 @@ declare(strict_types=1);
 namespace Seo\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
-use Cake\Event\Event;
-use Cake\Event\EventList;
-use Cake\Event\EventManager;
 use Cake\Routing\Router;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use Seo\Sitemap\SitemapUrl;
+use Seo\Test\App\Application;
 
 /**
  * Class SitemapControllerTest
@@ -27,11 +25,8 @@ class SitemapControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        EventManager::instance()->setEventList(new EventList());
-        EventManager::instance()->addEventToList(new Event('Sitemap.get'));
-        EventManager::instance()->on('Sitemap.get', function (Event $event) {
-            $event->getSubject()->add(new SitemapUrl('/foo', 0.8, time(), 'monthly'), 'test');
-        });
+
+        $this->configApplication(Application::class, []);
     }
 
     /**
@@ -57,6 +52,8 @@ class SitemapControllerTest extends TestCase
 
         $this->assertResponseOk();
         $this->assertContentType('application/xml');
+
+        debug((string)$this->_response->getBody());
 
         $expectedSitemapUrl = Router::url('/sitemap-test.xml', true);
         $expectedXml = <<<XML

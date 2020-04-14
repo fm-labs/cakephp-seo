@@ -1,13 +1,26 @@
 <?php
 declare(strict_types=1);
-
 /**
- * Test suite bootstrap.
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
- * This function is used to find the location of CakePHP whether CakePHP
- * has been installed as a dependency of the plugin, or the plugin is itself
- * installed as a dependency of an application.
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @since         0.1.0
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
+// phpcs:ignoreFile
+
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use Cake\Datasource\ConnectionManager;
+
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -16,23 +29,54 @@ $findRoot = function ($root) {
             return $root;
         }
     } while ($root !== $lastRoot);
-
-    throw new Exception("Cannot find the root of the application, unable to run tests");
+    throw new Exception('Cannot find the root of the application, unable to run tests');
 };
 $root = $findRoot(__FILE__);
 unset($findRoot);
-
 chdir($root);
-if (file_exists($root . '/config/bootstrap.php')) {
-    require $root . '/config/bootstrap.php';
 
-    return;
+//require_once 'vendor/cakephp/cakephp/src/basics.php';
+require_once 'vendor/autoload.php';
+
+define('ROOT', $root . DS . 'tests' . DS . 'test_app' . DS);
+define('APP', ROOT . 'App' . DS);
+define('CONFIG', APP);
+define('TMP', sys_get_temp_dir() . DS);
+define('CACHE', TMP . 'cache' . DS);
+
+//used by Cake\Command\HelpCommand
+define('CORE_PATH', $root . DS . 'vendor' . DS . 'cakephp' . DS . 'cakephp' . DS);
+define('CAKE', CORE_PATH . 'src' . DS);
+
+require CORE_PATH . 'config/bootstrap.php';
+
+Configure::write('debug', true);
+Configure::write('App', [
+    'debug' => true,
+    'namespace' => 'App',
+    'paths' => [
+        'plugins' => [ROOT . 'Plugin' . DS],
+        'templates' => [ROOT . 'templates' . DS]
+    ],
+    'encoding' => 'UTF-8'
+]);
+
+Cache::setConfig([
+    '_cake_core_' => [
+        'engine' => 'File',
+        'prefix' => 'cake_core_',
+        'serialize' => true,
+        'path' => CACHE,
+    ],
+]);
+
+if (!getenv('db_dsn')) {
+    putenv('db_dsn=sqlite:///:memory:');
 }
+ConnectionManager::setConfig('test', ['url' => getenv('db_dsn')]);
 
-require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+//Plugin::getCollection()->add(new \Bake\Plugin());
 
-\Cake\Core\Configure::write('App.namespace', 'Seo\Test\TestApp');
-
-\Seo\Sitemap\Sitemap::setConfig('default', [
-    'className' => \Seo\Test\TestApp\Sitemap\TestSitemapProvider::class,
+\Seo\Sitemap\Sitemap::setConfig('test', [
+    'className' => \Seo\Test\App\Sitemap\TestSitemapProvider::class,
 ]);

@@ -20,7 +20,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Seo\\Test\\": "tests",
+            "Seo\\Test\\": "./tests",
+            "Seo\\Test\\App\\": "./tests/test_app/App",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
     },

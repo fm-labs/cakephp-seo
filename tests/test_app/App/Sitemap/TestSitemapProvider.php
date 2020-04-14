@@ -1,5 +1,5 @@
 <?php
-namespace Seo\Test\TestApp\Sitemap;
+namespace Seo\Test\App\Sitemap;
 
 class TestSitemapProvider implements \IteratorAggregate
 {

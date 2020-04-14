@@ -5,7 +5,7 @@ namespace Seo\Test\Sitemap;
 use Cake\TestSuite\TestCase;
 use Seo\Sitemap\Sitemap;
 use Seo\Sitemap\SitemapUrl;
-use Seo\Test\TestApp\Sitemap\TestSitemapProvider;
+use Seo\Test\App\Sitemap\TestSitemapProvider;
 
 class SitemapTest extends TestCase
 {
@@ -20,6 +20,7 @@ class SitemapTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testStaticGetUrls(): void
     {
