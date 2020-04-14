@@ -28,16 +28,8 @@ class SitemapXmlView extends View
      */
     public function render(?string $template = null, $layout = null): string
     {
-        $urls = $this->get('urls', []);
-        $type = $this->get('type', 'sitemap');
-        $style = $this->get('style', null);
+        $sitemap = $this->get('sitemap', new Sitemap());
 
-        if ($type == 'index') {
-            $xml = Sitemap::buildSitemapIndexXml($urls, ['style' => $style]);
-        } elseif ($type == 'sitemap') {
-            $xml = Sitemap::buildSitemapXml($urls, ['style' => $style]);
-        }
-
-        return $xml->saveXML();
+        return $sitemap->toXml();
     }
 }

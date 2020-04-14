@@ -17,7 +17,7 @@ class SitemapXmlViewTest extends TestCase
     {
         $this->markTestIncomplete();
 
-        $locations = Sitemap::getUrls('default');
+        $locations = Sitemap::getProvider('default');
         $view = new SitemapXmlView();
         $view->set('locations', $locations);
         $result = $view->render();

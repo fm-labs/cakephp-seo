@@ -2,12 +2,10 @@
 
 namespace Seo\Test\Sitemap;
 
-use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
-use Seo\Sitemap\Provider\ArraySitemapProvider;
 use Seo\Sitemap\Sitemap;
+use Seo\Sitemap\SitemapUrl;
 use Seo\Test\TestApp\Sitemap\TestSitemapProvider;
-use Sitemap\Sitemap\SitemapLocation;
 
 class SitemapTest extends TestCase
 {
@@ -17,17 +15,6 @@ class SitemapTest extends TestCase
             'lastmod' => '2005-01-01',
             'changefreq' => 'monthly',
             'priority' => 0.8,
-        ],
-    ];
-    
-    public $indexUrls = [
-        [
-            'loc' => 'http://www.example.com/sitemap1.xml.gz',
-            'lastmod' => '2004-10-01T18:23:17+00:00',
-        ],
-        [
-            'loc' => 'http://www.example.com/sitemap2.xml.gz',
-            'lastmod' => '2005-01-01',
         ],
     ];
 
@@ -41,7 +28,7 @@ class SitemapTest extends TestCase
         Sitemap::setConfig('test', [
             'urls' => $this->urls,
         ]);
-        $urls = Sitemap::getUrls('test');
+        $urls = Sitemap::getProvider('test');
         $this->assertIsIterable($urls);
 
         // Sitemap from provider (generator class)
@@ -49,7 +36,7 @@ class SitemapTest extends TestCase
         Sitemap::setConfig('test', [
             'className' => TestSitemapProvider::class,
         ]);
-        $urls = Sitemap::getUrls('test');
+        $urls = Sitemap::getProvider('test');
         $this->assertIsIterable($urls);
 
         Sitemap::drop('test');
@@ -61,10 +48,8 @@ class SitemapTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testStaticBuildSitemapXml(): void
+    public function testToXml(): void
     {
-        $urls = $this->urls;
-
         //phpcs:disable
         // <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
         $expected = <<<XML
@@ -80,45 +65,95 @@ class SitemapTest extends TestCase
 
 XML;
         //phpcs:enable
-        $xml = Sitemap::buildSitemapXml($urls);
-        $sitemap = $xml->saveXML();
-        $this->assertTextEquals($expected, $sitemap);
-
-        $validate = Sitemap::validateSitemapXml($xml);
-        $this->assertTrue($validate);
+        $sitemap = new Sitemap($this->urls);
+        $xml = $sitemap->toXml();
+        $this->assertTextEquals($expected, $xml);
     }
 
     /**
      * @return void
      * @throws \Exception
      */
-    public function testStaticBuildSitemapIndexXml(): void
+    public function testToXmlWithValidationNs(): void
     {
-        $urls = $this->indexUrls;
-
         //phpcs:disable
-        //<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd">
         $expected = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>http://www.example.com/sitemap1.xml.gz</loc>
-    <lastmod>2004-10-01T18:23:17+00:00</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>http://www.example.com/sitemap2.xml.gz</loc>
-    <lastmod>2005-01-01</lastmod>
-  </sitemap>
-</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"/>
 
 XML;
         //phpcs:enable
-        $xml = Sitemap::buildSitemapIndexXml($urls);
-        $sitemap = $xml->saveXML();
-        $this->assertTextEquals($expected, $sitemap);
-
-        $validate = Sitemap::validateSitemapIndexXml($xml);
-        $this->assertTrue($validate);
+        $sitemap = new Sitemap();
+        $sitemap->enableXmlValidationNs(true);
+        $xml = $sitemap->toXml();
+        $this->assertTextEquals($expected, $xml);
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testToXmlWithStylesheet(): void
+    {
+        //phpcs:disable
+        // <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+        $expected = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/path/to/style.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>
+
+XML;
+        //phpcs:enable
+        $sitemap = new Sitemap();
+        $sitemap->setStyleUrl('/path/to/style.xsl');
+        $xml = $sitemap->toXml();
+        $this->assertTextEquals($expected, $xml);
+    }
+
+    /**
+     * @return void
+     * @throws \Exception
+     */
+    public function testValidateXml(): void
+    {
+        $sitemap = new Sitemap($this->urls);
+        $this->assertTrue($sitemap->validateXml());
+    }
+
+    /**
+     * @return void
+     */
+    public function testToLines(): void
+    {
+        $expected = <<<TEXT
+http://www.example.com/
+http://www.example.org/
+
+TEXT;
+
+        $sitemap = new Sitemap($this->urls);
+        $sitemap->addUrl('http://www.example.org/');
+        $this->assertTextEquals($expected, $sitemap->toLines());
+    }
+
+    /**
+     * @return void
+     */
+    public function testAddUrl(): void
+    {
+        $sitemap = new Sitemap();
+        $sitemap->addUrl('http://www.example.com/1/');
+        $sitemap->addUrl(['loc' => 'http://www.example.com/2/']);
+        $sitemap->addUrl(new SitemapUrl('http://www.example.org/3/'));
+        $sitemap->addUrl(new SitemapUrl(['loc' => 'http://www.example.org/4/']));
+
+        $expected = <<<TEXT
+http://www.example.com/1/
+http://www.example.com/2/
+http://www.example.org/3/
+http://www.example.org/4/
+
+TEXT;
+        $this->assertTextEquals($expected, $sitemap->toLines());
+    }
 }

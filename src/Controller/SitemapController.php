@@ -8,6 +8,7 @@ use Cake\Core\Plugin;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\NotFoundException;
 use Seo\Sitemap\Sitemap;
+use Seo\Sitemap\SitemapIndex;
 use Seo\Sitemap\SitemapUrl;
 
 /**
@@ -33,31 +34,36 @@ class SitemapController extends Controller
             }
         };
 
-        $this->set('urls', $indexUrls());
-        $this->set('type', 'index');
-        $this->set('style', \Cake\Core\Configure::read('Seo.Sitemap.style'));
+        $sitemap = new SitemapIndex();
+        $sitemap->addProvider($indexUrls);
+        $sitemap->setStyleUrl(\Cake\Core\Configure::read('Seo.Sitemap.styleUrl'));
+
+        $this->set('sitemap', $sitemap);
     }
 
     /**
      * Sitemap view method
      * Renders a list of sitemap locations for given scope in xml format
      *
-     * @param string|null $sitemap Sitemap ID
+     * @param string|null $scope Sitemap scope
      * @return void
      * @throws \Exception
      */
-    public function sitemap(?string $sitemap = null): void
+    public function sitemap(?string $scope = null): void
     {
         $this->viewBuilder()->setClassName('Seo.SitemapXml');
 
-        if (!$sitemap) {
+        if (!$scope) {
             throw new BadRequestException();
         }
 
-        $urls = Sitemap::getUrls($sitemap);
-        $this->set('urls', $urls);
-        $this->set('type', 'sitemap');
-        $this->set('style', \Cake\Core\Configure::read('Seo.Sitemap.style'));
+        $provider = Sitemap::getProvider($scope);
+
+        $sitemap = new Sitemap();
+        $sitemap->addProvider($provider);
+
+        $this->set('sitemap', $sitemap);
+        $this->set('styleUrl', \Cake\Core\Configure::read('Seo.Sitemap.styleUrl'));
     }
 
     /**

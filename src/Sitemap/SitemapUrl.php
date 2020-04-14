@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Seo\Sitemap;
 
-use Cake\I18n\Time;
 use Cake\Routing\Router;
 
 /**
@@ -25,16 +24,16 @@ class SitemapUrl
     protected $_fields = [];
 
     /**
-     * @param array|\Seo\Sitemap\SitemapUrl $loc Location data
+     * @param string|array|\Seo\Sitemap\SitemapUrl $url Location data
      * @return self
      */
-    public static function create($loc): self
+    public static function createFrom($url): self
     {
-        if ($loc instanceof self) {
-            return $loc;
+        if ($url instanceof self) {
+            return $url;
         }
 
-        return new self($loc);
+        return new self($url);
     }
 
     /**
@@ -94,7 +93,7 @@ class SitemapUrl
 
     /**
     // @link http://www.w3.org/TR/NOTE-datetime
-     * @param \Cake\I18n\Time|\DateTime|string $lastmod Last modified datetime. W3C time format
+     * @param \DateTimeInterface|string $lastmod Last modified datetime. W3C time format
      * @return $this
      */
     public function setLastMod($lastmod)
@@ -129,7 +128,10 @@ class SitemapUrl
      */
     public function isValid(): bool
     {
-        // @TODO Implement SitemapUrl validation
+        if (empty($this->_fields['loc'])) {
+            return false;
+        }
+
         return true;
     }
 
