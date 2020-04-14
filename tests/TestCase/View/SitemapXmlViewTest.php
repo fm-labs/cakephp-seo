@@ -1,6 +1,6 @@
 <?php
 
-namespace Seo\Test\View;
+namespace Seo\Test\TestCase\View;
 
 use Cake\TestSuite\TestCase;
 use Seo\Sitemap\Sitemap;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seo\Test\Sitemap;
+namespace Seo\Test\TestCase\Sitemap;
 
 use Cake\TestSuite\TestCase;
 use Seo\Sitemap\SitemapIndex;
