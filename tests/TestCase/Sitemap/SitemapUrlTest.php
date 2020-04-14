@@ -10,15 +10,21 @@ class SitemapUrlTest extends TestCase
     /**
      * @return void
      */
-    public function testStaticCreate()
+    public function testStaticCreateFrom(): void
     {
-        $this->markTestIncomplete();
+        $url = SitemapUrl::createFrom('/test');
+        $this->assertInstanceOf(SitemapUrl::class, $url);
+        $this->assertEquals('/test', $url->loc);
+
+        $url = SitemapUrl::createFrom(new SitemapUrl('/test'));
+        $this->assertInstanceOf(SitemapUrl::class, $url);
+        $this->assertEquals('/test', $url->loc);
     }
 
     /**
      * @return void
      */
-    public function testSetChangeFreq()
+    public function testSetChangeFreq(): void
     {
         $loc = new SitemapUrl('http://www.example.com');
         $this->assertEquals(null, $loc->changefreq);
@@ -30,7 +36,7 @@ class SitemapUrlTest extends TestCase
     /**
      * @return void
      */
-    public function testSetLocation()
+    public function testSetLocation(): void
     {
         $url = 'http://www.example.com';
         $loc = new SitemapUrl($url);
@@ -44,7 +50,7 @@ class SitemapUrlTest extends TestCase
     /**
      * @return void
      */
-    public function testSetPriority()
+    public function testSetPriority(): void
     {
         $loc = new SitemapUrl('http://www.example.com');
         $this->assertEquals('0.5', $loc->priority);
@@ -64,8 +70,9 @@ class SitemapUrlTest extends TestCase
 
     /**
      * @return void
+     * @throws \Exception
      */
-    public function testSetLastMod()
+    public function testSetLastMod(): void
     {
         $loc = new SitemapUrl('http://www.example.com');
         $this->assertEquals(null, $loc->lastmod);
@@ -75,25 +82,32 @@ class SitemapUrlTest extends TestCase
 
         $loc->setLastMod(new \DateTime('1999-01-01'));
         $this->assertEquals('1999-01-01T00:00:00+00:00', $loc->lastmod);
-
-        $loc->setLastMod(new \Cake\I18n\Time('1998-01-01'));
-        $this->assertEquals('1998-01-01T00:00:00+00:00', $loc->lastmod);
     }
 
     /**
      * @return void
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
-        $this->markTestIncomplete();
+        $url = new SitemapUrl(null);
+        $this->assertFalse($url->isValid());
+
+        $url = new SitemapUrl('/');
+        $this->assertTrue($url->isValid());
     }
 
     /**
      * @return void
      */
-    public function testToArray()
+    public function testToArray(): void
     {
-        $this->markTestIncomplete();
+        $url = new SitemapUrl('/', 0.5, '2000-01-01', 'never');
+        $expected = [
+            'loc' => '/',
+            'priority' => 0.5,
+            'lastmod' => '2000-01-01',
+            'changefreq' => 'never',
+        ];
+        $this->assertEquals($expected, $url->toArray());
     }
-
 }

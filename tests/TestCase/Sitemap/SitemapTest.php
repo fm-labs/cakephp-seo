@@ -24,7 +24,7 @@ class SitemapTest extends TestCase
      */
     public function testStaticGetUrls(): void
     {
-        // Sitemap from array
+        // Sitemap from Array
         Sitemap::drop('test');
         Sitemap::setConfig('test', [
             'urls' => self::SITEMAP_URLS,
@@ -32,7 +32,7 @@ class SitemapTest extends TestCase
         $urls = Sitemap::getProvider('test');
         $this->assertIsIterable($urls);
 
-        // Sitemap from provider (generator class)
+        // Sitemap from IteratorAggregate
         Sitemap::drop('test');
         Sitemap::setConfig('test', [
             'className' => TestSitemapProvider::class,
@@ -41,8 +41,6 @@ class SitemapTest extends TestCase
         $this->assertIsIterable($urls);
 
         Sitemap::drop('test');
-
-        $this->markTestIncomplete();
     }
 
     /**

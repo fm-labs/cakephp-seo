@@ -92,7 +92,7 @@ class SitemapUrl
     }
 
     /**
-    // @link http://www.w3.org/TR/NOTE-datetime
+     * @link http://www.w3.org/TR/NOTE-datetime
      * @param \DateTimeInterface|string $lastmod Last modified datetime. W3C time format
      * @return $this
      */
