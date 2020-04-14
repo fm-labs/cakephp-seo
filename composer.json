@@ -1,6 +1,7 @@
 {
     "name": "fm-labs/cakephp-seo",
     "description": "Seo plugin for CakePHP",
+    "license": "MIT",
     "type": "cakephp-plugin",
     "require": {
         "php": ">=7.2",
@@ -22,9 +23,6 @@
             "Seo\\Test\\": "tests",
             "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
         }
-    },
-    "scripts": {
-        
     },
     "scripts": {
         "check": [
