@@ -307,11 +307,12 @@ class Sitemap implements \IteratorAggregate
     /**
      * Returns the text representation string (One line per sitemap url entry)
      * @return string
+     * @throws \Exception
      */
-    public function toLines(): string
+    public function toText(): string
     {
         $lines = "";
-        foreach ($this->getIterator() as $url) {
+        foreach ($this->getUrls() as $url) {
             $url = SitemapUrl::createFrom($url);
             if ($url->isValid()) {
                 $lines .= $url->loc . "\n";

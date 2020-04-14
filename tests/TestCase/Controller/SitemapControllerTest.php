@@ -106,4 +106,17 @@ XML;
         $this->assertResponseOk();
         $this->assertContentType('text/xsl');
     }
+
+    /**
+     * @return void
+     * @throws \Throwable
+     */
+    public function testSitemapTxt(): void
+    {
+        //$this->get('/sitemap.txt');
+        $this->get(['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap', 'test', '_ext' => 'txt']);
+
+        $this->assertResponseOk();
+        $this->assertContentType('text/plain');
+    }
 }

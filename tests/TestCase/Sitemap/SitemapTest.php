@@ -123,8 +123,9 @@ XML;
 
     /**
      * @return void
+     * @throws \Exception
      */
-    public function testToLines(): void
+    public function testToText(): void
     {
         $expected = <<<TEXT
 http://www.example.com/
@@ -134,11 +135,12 @@ TEXT;
 
         $sitemap = new Sitemap(self::SITEMAP_URLS);
         $sitemap->addUrl('http://www.example.org/');
-        $this->assertTextEquals($expected, $sitemap->toLines());
+        $this->assertTextEquals($expected, $sitemap->toText());
     }
 
     /**
      * @return void
+     * @throws \Exception
      */
     public function testAddUrl(): void
     {
@@ -155,6 +157,6 @@ http://www.example.org/3/
 http://www.example.org/4/
 
 TEXT;
-        $this->assertTextEquals($expected, $sitemap->toLines());
+        $this->assertTextEquals($expected, $sitemap->toText());
     }
 }

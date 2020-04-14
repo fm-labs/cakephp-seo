@@ -27,7 +27,7 @@ class SitemapController extends Controller
      */
     public function index()
     {
-        $this->viewBuilder()->setClassName('Seo.SitemapXml');
+        $this->viewBuilder()->setClassName('Seo.Sitemap');
 
         $indexUrls = function () {
             foreach (Sitemap::configured() as $sitemapId) {
@@ -52,7 +52,7 @@ class SitemapController extends Controller
      */
     public function sitemap(?string $scope = null): void
     {
-        $this->viewBuilder()->setClassName('Seo.SitemapXml');
+        $this->viewBuilder()->setClassName('Seo.Sitemap');
 
         if (!$scope) {
             throw new BadRequestException();

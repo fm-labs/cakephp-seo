@@ -7,19 +7,24 @@ use Cake\View\View;
 use Seo\Sitemap\Sitemap;
 
 /**
- * Class SitemapXmlView
+ * Class SitemapView
  *
  * @package Seo\View
  */
-class SitemapXmlView extends View
+class SitemapView extends View
 {
+    protected $_responseType = 'xml';
+
     /**
      * {@inheritDoc}
      */
     public function initialize(): void
     {
+        $ext = $this->getRequest()->getParam('_ext');
+        $this->_responseType = $ext === 'txt' ? 'txt' : 'xml';
+
         $this->setResponse($this->getResponse()
-            ->withType('application/xml')
+            ->withType($this->_responseType)
             ->withCache(time(), '+1 day'));
     }
 
@@ -28,7 +33,12 @@ class SitemapXmlView extends View
      */
     public function render(?string $template = null, $layout = null): string
     {
+        /** @var \Seo\Sitemap\Sitemap $sitemap */
         $sitemap = $this->get('sitemap', new Sitemap());
+
+        if ($this->_responseType == 'txt') {
+            return $sitemap->toText();
+        }
 
         return $sitemap->toXml();
     }
