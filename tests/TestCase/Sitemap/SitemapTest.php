@@ -9,7 +9,7 @@ use Seo\Test\App\Sitemap\TestSitemapProvider;
 
 class SitemapTest extends TestCase
 {
-    public $urls = [
+    public const SITEMAP_URLS = [
         [
             'loc' => 'http://www.example.com/',
             'lastmod' => '2005-01-01',
@@ -27,7 +27,7 @@ class SitemapTest extends TestCase
         // Sitemap from array
         Sitemap::drop('test');
         Sitemap::setConfig('test', [
-            'urls' => $this->urls,
+            'urls' => self::SITEMAP_URLS,
         ]);
         $urls = Sitemap::getProvider('test');
         $this->assertIsIterable($urls);
@@ -66,7 +66,7 @@ class SitemapTest extends TestCase
 
 XML;
         //phpcs:enable
-        $sitemap = new Sitemap($this->urls);
+        $sitemap = new Sitemap(self::SITEMAP_URLS);
         $xml = $sitemap->toXml();
         $this->assertTextEquals($expected, $xml);
     }
@@ -117,7 +117,7 @@ XML;
      */
     public function testValidateXml(): void
     {
-        $sitemap = new Sitemap($this->urls);
+        $sitemap = new Sitemap(self::SITEMAP_URLS);
         $this->assertTrue($sitemap->validateXml());
     }
 
@@ -132,7 +132,7 @@ http://www.example.org/
 
 TEXT;
 
-        $sitemap = new Sitemap($this->urls);
+        $sitemap = new Sitemap(self::SITEMAP_URLS);
         $sitemap->addUrl('http://www.example.org/');
         $this->assertTextEquals($expected, $sitemap->toLines());
     }
