@@ -53,8 +53,6 @@ class SitemapControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertContentType('application/xml');
 
-        debug((string)$this->_response->getBody());
-
         $expectedSitemapUrl = Router::url('/sitemap-test.xml', true);
         $expectedXml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>

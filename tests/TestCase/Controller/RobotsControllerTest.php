@@ -66,9 +66,6 @@ class RobotsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertContentType('text/plain');
 
-        $response = (string)$this->_response->getBody();
-        debug($response);
-
         $sitemapUrl = Router::url(Configure::read('Seo.Robots.sitemapUrl'), true);
         $expected = "Sitemap: " . $sitemapUrl . "\n";
         $this->assertResponseContains($expected);
@@ -76,6 +73,7 @@ class RobotsControllerTest extends TestCase
         $expected = "User-agent: *\nDisallow: /admin/";
         $this->assertResponseContains($expected);
 
+        $response = (string)$this->_response->getBody();
         $expected = [
             'Sitemap: ' . $sitemapUrl,
             '',

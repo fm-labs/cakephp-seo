@@ -39,8 +39,6 @@ class RobotsController extends Controller
      */
     public function index()
     {
-        $this->autoRender = false;
-
         // sitemap
         $lines = [];
         if (!Configure::read('Seo.Sitemap.disable') && !Configure::read('Seo.Robots.disable')) {
@@ -65,10 +63,8 @@ class RobotsController extends Controller
             }
         }
 
-        debug($lines);
-
-        $this->setResponse($this->getResponse()
+        return $this->getResponse()
             ->withType('text/plain')
-            ->withStringBody(trim(join("\n", $lines))));
+            ->withStringBody(trim(join("\n", $lines)));
     }
 }
