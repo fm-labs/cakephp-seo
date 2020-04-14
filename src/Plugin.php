@@ -5,17 +5,15 @@ namespace Seo;
 
 use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
-use Cake\Event\Event;
-use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Settings\SettingsManager;
+use Cake\Routing\RouteBuilder;
 
 /**
  * Class SeoPlugin
  *
  * @package Seo
  */
-class Plugin extends BasePlugin implements EventListenerInterface
+class Plugin extends BasePlugin
 {
     /**
      * {@inheritDoc}
@@ -28,7 +26,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     /**
      * {@inheritDoc}
      */
-    public function routes(\Cake\Routing\RouteBuilder $routes): void
+    public function routes(RouteBuilder $routes): void
     {
         //Router::extensions(['xml']);
         // robots.txt
@@ -63,29 +61,5 @@ class Plugin extends BasePlugin implements EventListenerInterface
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'style'],
             ['pass' => ['name'], '_ext' => ['xsl']]
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function implementedEvents(): array
-    {
-        return [
-            'Settings.build' => 'buildSettings',
-        ];
-    }
-
-    /**
-     * @param \Cake\Event\Event $event Event object
-     * @param \Settings\SettingsManager $settingsManager SettingsManager object
-     * @return void
-     */
-    public function buildSettings(Event $event, SettingsManager $settingsManager): void
-    {
-        $settingsManager->add('Seo', [
-            'Google.Analytics.trackingId' => [
-                'type' => 'string',
-            ],
-        ]);
     }
 }
