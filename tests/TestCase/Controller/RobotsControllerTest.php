@@ -31,10 +31,10 @@ class RobotsControllerTest extends TestCase
                 'sitemapUrl' => '/sitemap-test-url.xml',
                 'rules' => [
                     '*' => [
-                        '/admin/',
+                        '/admin/' => false,
                     ],
                     'GoogleBot' => [
-                        '/no-google/',
+                        '/no-google/' => false,
                     ],
                 ],
             ],
@@ -73,15 +73,20 @@ class RobotsControllerTest extends TestCase
         $expected = "User-agent: *\nDisallow: /admin/";
         $this->assertResponseContains($expected);
 
+        $expected = "User-agent: GoogleBot\nDisallow: /no-google/";
+        $this->assertResponseContains($expected);
+
         $response = (string)$this->_response->getBody();
         $expected = [
             'Sitemap: ' . $sitemapUrl,
             '',
             'User-agent: *',
+            //'Allow: /', // default rule
             'Disallow: /admin/',
             '',
             'User-agent: GoogleBot',
             'Disallow: /no-google/',
+            '',
         ];
         $this->assertEquals($expected, explode("\n", $response));
     }
