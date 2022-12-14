@@ -16,7 +16,7 @@ class SitemapView extends View
     protected $_responseType = 'xml';
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function initialize(): void
     {
@@ -29,7 +29,7 @@ class SitemapView extends View
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function render(?string $template = null, $layout = null): string
     {

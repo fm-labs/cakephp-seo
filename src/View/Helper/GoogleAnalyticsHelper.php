@@ -33,7 +33,6 @@ class GoogleAnalyticsHelper extends Helper
             || $view->get('_no_tracking')
             || $view->get('_private');
 
-        $html = "";
         if ($trackingId && !$disabled) {
             $html = $view->element(
                 'Seo.Tracking/google_' . $this->getConfig('implementation'),
@@ -46,8 +45,8 @@ class GoogleAnalyticsHelper extends Helper
                 $html = "<!-- " . $html . " -->";
                 $html .= sprintf("<script>console.log('%s')</script>", $devMsg);
             }
-        }
 
-        $event->getSubject()->assign($this->getConfig('block'), $html);
+            $event->getSubject()->assign($this->getConfig('block'), $html);
+        }
     }
 }
