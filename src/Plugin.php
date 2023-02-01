@@ -48,12 +48,12 @@ class Plugin extends BasePlugin
             ['_name' => 'seo:sitemap', '_ext' => ['xml', 'txt']]
         );
         $routes->connect(
-            '/sitemap-:sitemap-:page',
+            '/sitemap-{sitemap}-{sitemap}',
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
             ['pass' => ['sitemap', 'page'], '_ext' => ['xml', 'txt']]
         );
         $routes->connect(
-            '/sitemap-:sitemap',
+            '/sitemap-{sitemap}',
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
             ['pass' => ['sitemap'], '_ext' => ['xml', 'txt']]
         );
@@ -61,7 +61,7 @@ class Plugin extends BasePlugin
         // stylesheets
         //Router::extensions(['xsl']);
         $routes->connect(
-            '/sitemap/style/:name',
+            '/sitemap/style/{name}',
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'style'],
             ['pass' => ['name'], '_ext' => ['xsl']]
         );
