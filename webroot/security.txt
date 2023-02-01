@@ -1,0 +1,9 @@
+Contact: mailto:security@fmlabs.eu
+Contact: https://security.fmlabs.eu
+Expires: 2033-03-03T02:03:00.000Z
+Encryption: /pgp-key.txt
+Acknowledgments: /hall-of-fame.html
+Preferred-Languages: en
+Canonical: /security.txt
+Policy: /security-policy.html
+Hiring: /we-are-hiring.html

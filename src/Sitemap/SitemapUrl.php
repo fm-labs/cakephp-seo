@@ -42,10 +42,14 @@ class SitemapUrl
      * @param \DateTime|string|null $lastmod Last modified date of resource
      * @param string|null $changefreq Change frequence of resource
      */
-    public function __construct($loc, $priority = 0.5, $lastmod = null, $changefreq = null)
+    public function __construct($loc, float $priority = 0.5, $lastmod = null, ?string $changefreq = null)
     {
         if (is_array($loc) && isset($loc['loc'])) {
             extract($loc, EXTR_IF_EXISTS);
+        }
+
+        if ($lastmod === null) {
+            $lastmod = new \DateTime();
         }
 
         $this->setLocation($loc);

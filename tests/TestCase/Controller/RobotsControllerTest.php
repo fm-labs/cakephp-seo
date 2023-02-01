@@ -66,7 +66,7 @@ class RobotsControllerTest extends TestCase
         $this->assertResponseOk();
         $this->assertContentType('text/plain');
 
-        $sitemapUrl = Router::url(Configure::read('Seo.Robots.sitemapUrl'), true);
+        $sitemapUrl = Router::url(Configure::read('Seo.RobotsTxt.sitemapUrl'), true);
         $expected = "Sitemap: " . $sitemapUrl . "\n";
         $this->assertResponseContains($expected);
 

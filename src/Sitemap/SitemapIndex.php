@@ -19,7 +19,7 @@ class SitemapIndex extends Sitemap
     {
         parent::__construct($urls);
 
-        $this->xmlValidationFile = Plugin::path('Seo') . DS . 'resources' . DS . 'schema' . DS . 'siteindex.xsd';
+        $this->xmlValidationFile = Plugin::path('Seo') . DS . 'resources' . DS . 'xsd' . DS . 'siteindex.xsd';
     }
 
     /**

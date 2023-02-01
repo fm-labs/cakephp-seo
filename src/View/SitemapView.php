@@ -37,7 +37,7 @@ class SitemapView extends View
         $sitemap = $this->get('sitemap', new Sitemap());
 
         if ($this->_responseType == 'txt') {
-            return $sitemap->toText();
+            //return $sitemap->toText();
         }
 
         return $sitemap->toXml();

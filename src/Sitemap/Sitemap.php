@@ -6,6 +6,7 @@ namespace Seo\Sitemap;
 use Cake\Core\App;
 use Cake\Core\Plugin;
 use Cake\Core\StaticConfigTrait;
+use Cake\Routing\Router;
 
 /**
  * Class Sitemap
@@ -205,7 +206,7 @@ class Sitemap implements \IteratorAggregate
         if ($options['stylesheet']) {
             $styleUrl = strpos($options['stylesheet'], "/") === false
                         && in_array($options['stylesheet'], self::STYLES)
-                ? '/sitemap/style/' . $options['stylesheet']
+                ? Router::url('/sitemap/style/' . $options['stylesheet'] . '.xsl', true)
                 : $options['stylesheet'];
 
             $xslt = $doc->createProcessingInstruction(

@@ -6,7 +6,7 @@ namespace Seo\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
-use Cake\Http\Exception\BadRequestException;
+use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -30,15 +30,17 @@ class SitemapController extends Controller
     {
         $this->viewBuilder()->setClassName('Seo.Sitemap');
 
-        $indexUrls = function () {
+        $indexUrlProvider = function () {
             foreach (Sitemap::configured() as $sitemapId) {
-                yield new SitemapUrl(['action' => 'sitemap', '_ext' => 'xml', $sitemapId]);
+                yield new SitemapUrl(['action' => 'sitemap', '_ext' => 'xml', $sitemapId], 0.5);
             }
         };
 
         $sitemap = new SitemapIndex();
-        $sitemap->addProvider($indexUrls);
+        $sitemap->addProvider($indexUrlProvider);
         $sitemap->setStyleUrl(Configure::read('Seo.Sitemap.styleUrl'));
+
+        $this->getEventManager()->dispatch(new Event('Seo.Sitemap.buildIndex', $sitemap));
 
         $this->set('sitemap', $sitemap);
     }
@@ -61,10 +63,14 @@ class SitemapController extends Controller
 
         try {
             $sitemap = new Sitemap();
+            $sitemap->setStyleUrl(Configure::read('Seo.Sitemap.styleUrl'));
+
             $provider = Sitemap::getProvider($scope);
             $sitemap->addProvider($provider);
+
+            $this->getEventManager()->dispatch(new Event('Seo.Sitemap.build', $sitemap));
+
             $this->set('sitemap', $sitemap);
-            $this->set('styleUrl', Configure::read('Seo.Sitemap.styleUrl'));
         } catch (\Exception $ex) {
             throw new InternalErrorException($ex->getMessage());
         }
@@ -80,7 +86,7 @@ class SitemapController extends Controller
         $this->setResponse($this->getResponse()
             ->withType('text/xsl'));
 
-        $file = Plugin::path('Seo') . 'resources' . DS . 'stylesheet' . DS . 'sitemap-' . $name . '.xsl';
+        $file = Plugin::path('Seo') . 'webroot' . DS . 'xsl' . DS . 'sitemap-' . $name . '.xsl';
         if (!file_exists($file)) {
             throw new NotFoundException();
         }

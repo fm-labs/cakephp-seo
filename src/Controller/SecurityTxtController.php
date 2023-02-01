@@ -6,14 +6,14 @@ namespace Seo\Controller;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
-use Seo\Robots\RobotsTxt;
+use Seo\Lib\Robots\RobotsTxtBuilder;
 
 /**
- * Class RobotsController
+ * Class SecurityTxtController
  *
  * @package Seo\Controller
  */
-class RobotsController extends Controller
+class SecurityTxtController extends Controller
 {
     protected $defaultRobotRules = [
         '*' => [
@@ -40,11 +40,11 @@ class RobotsController extends Controller
      */
     public function index()
     {
-        $robots = new RobotsTxt();
-        //$robots->addRules($this->defaultRobotRules);
-        $robots->addRules(Configure::read('Seo.Robots.rules', []));
+        $robots = new RobotsTxtBuilder();
+        $robots->addRules($this->defaultRobotRules);
+        $robots->addRules(Configure::read('Seo.RobotsTxt.rules', []));
 
-        $sitemapUrl = Configure::read('Seo.Robots.sitemapUrl', ['_name' => 'seo:sitemap', '_ext' => 'xml']);
+        $sitemapUrl = Configure::read('Seo.RobotsTxt.sitemapUrl', ['_name' => 'seo:sitemap', '_ext' => 'xml']);
         $robots->setSitemap(Router::url($sitemapUrl, true));
 
         return $this->getResponse()

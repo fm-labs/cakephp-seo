@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Seo\Test\TestCase\Robots;
 
 use Cake\TestSuite\TestCase;
-use Seo\Robots\RobotsTxt;
+use Seo\Lib\Robots\RobotsTxtBuilder;
 
 class RobotsTxtTest extends TestCase
 {
@@ -18,7 +18,7 @@ class RobotsTxtTest extends TestCase
             '/path2/' => false,
         ];
 
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
         $robots->addRules(['*' => $rules]);
 
         $this->assertEquals($rules, $robots->getRules('*'));
@@ -29,14 +29,14 @@ class RobotsTxtTest extends TestCase
      */
     public function testAllow(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
         $robots->allow('*', '/allow1/');
         $robots->allow('*', ['/allow2/', '/allow3/']);
 
         $expected = [
-            '/allow1/' => RobotsTxt::ALLOW,
-            '/allow2/' => RobotsTxt::ALLOW,
-            '/allow3/' => RobotsTxt::ALLOW,
+            '/allow1/' => RobotsTxtBuilder::ALLOW,
+            '/allow2/' => RobotsTxtBuilder::ALLOW,
+            '/allow3/' => RobotsTxtBuilder::ALLOW,
         ];
         $this->assertEquals($expected, $robots->getRules('*'));
     }
@@ -46,14 +46,14 @@ class RobotsTxtTest extends TestCase
      */
     public function testDisallow(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
         $robots->disallow('*', '/disallow1/');
         $robots->disallow('*', ['/disallow2/', '/disallow3/']);
 
         $expected = [
-            '/disallow1/' => RobotsTxt::DISALLOW,
-            '/disallow2/' => RobotsTxt::DISALLOW,
-            '/disallow3/' => RobotsTxt::DISALLOW,
+            '/disallow1/' => RobotsTxtBuilder::DISALLOW,
+            '/disallow2/' => RobotsTxtBuilder::DISALLOW,
+            '/disallow3/' => RobotsTxtBuilder::DISALLOW,
         ];
         $this->assertEquals($expected, $robots->getRules('*'));
     }
@@ -63,7 +63,7 @@ class RobotsTxtTest extends TestCase
      */
     public function testSetHost(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
 
         $robots->setHost('www.example.org');
         $expected = ['Host: www.example.org', ''];
@@ -79,7 +79,7 @@ class RobotsTxtTest extends TestCase
      */
     public function testSetCrawlDelay(): void
     {
-        $robots = new RobotsTxt(['*' => ['/' => true]]);
+        $robots = new RobotsTxtBuilder(['*' => ['/' => true]]);
 
         $robots->setCrawlDelay(5);
         $expected = ['User-agent: *', 'Crawl-delay: 5', 'Allow: /', ''];
@@ -95,7 +95,7 @@ class RobotsTxtTest extends TestCase
      */
     public function testSetSitemap(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
 
         $robots->setSitemap('http://example.org/sitemap.xml');
         $expected = ['Sitemap: http://example.org/sitemap.xml', ''];
@@ -111,7 +111,7 @@ class RobotsTxtTest extends TestCase
      */
     public function testGetLines(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
         $robots->allow('*', '/allow/');
         $robots->disallow('*', '/disallow/');
         $robots->setSitemap('/sitemap.xml');
@@ -136,7 +136,7 @@ class RobotsTxtTest extends TestCase
      */
     public function testToString(): void
     {
-        $robots = new RobotsTxt();
+        $robots = new RobotsTxtBuilder();
         $robots->allow('*', '/allow/');
         $robots->disallow('*', '/disallow/');
         $robots->setSitemap('/sitemap.xml');

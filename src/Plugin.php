@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Seo;
 
 use Cake\Core\BasePlugin;
+use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Routing\RouteBuilder;
 
@@ -19,6 +20,11 @@ class Plugin extends BasePlugin
      */
     public function bootstrap(PluginApplicationInterface $app): void
     {
+        Configure::load('Seo.seo');
+
+        if (\Cake\Core\Plugin::isLoaded('Admin')) {
+            \Admin\Admin::addPlugin(new Admin());
+        }
     }
 
     /**
@@ -30,7 +36,7 @@ class Plugin extends BasePlugin
         //Router::extensions(['txt']);
         $routes->connect(
             '/robots',
-            ['plugin' => 'Seo', 'controller' => 'Robots', 'action' => 'index'],
+            ['plugin' => 'Seo', 'controller' => 'RobotsTxt', 'action' => 'index'],
             ['_name' => 'seo:robots', '_ext' => ['txt']]
         );
 
@@ -39,7 +45,7 @@ class Plugin extends BasePlugin
         $routes->connect(
             '/sitemap',
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'index'],
-            ['_name' => 'seo:sitemap', '_ext' => ['xml']]
+            ['_name' => 'seo:sitemap', '_ext' => ['xml', 'txt']]
         );
         $routes->connect(
             '/sitemap-:sitemap-:page',

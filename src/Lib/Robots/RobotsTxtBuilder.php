@@ -1,15 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Seo\Robots;
+namespace Seo\Lib\Robots;
 
 use Cake\Routing\Router;
 
+
 /**
- * Class RobotsTxt
- * @package Seo\Robots
+ * Class RobotsTxtBuilder
+ *
+ * @package Seo\Lib
  */
-class RobotsTxt
+class RobotsTxtBuilder
 {
     public const ALLOW = true;
     public const DISALLOW = false;
