@@ -48,7 +48,7 @@ class Plugin extends BasePlugin
             ['_name' => 'seo:sitemap', '_ext' => ['xml', 'txt']]
         );
         $routes->connect(
-            '/sitemap-{sitemap}-{sitemap}',
+            '/sitemap-{sitemap}-{page}',
             ['plugin' => 'Seo', 'controller' => 'Sitemap', 'action' => 'sitemap'],
             ['pass' => ['sitemap', 'page'], '_ext' => ['xml', 'txt']]
         );
