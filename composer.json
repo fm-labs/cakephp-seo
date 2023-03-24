@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "cakephp-plugin",
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.0",
         "ext-xml": "*",
         "ext-dom": "*",
         "ext-simplexml": "*",
