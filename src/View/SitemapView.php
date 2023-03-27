@@ -13,7 +13,7 @@ use Seo\Sitemap\Sitemap;
  */
 class SitemapView extends View
 {
-    protected $_responseType = 'xml';
+    protected string $_responseType = 'xml';
 
     /**
      * @inheritDoc

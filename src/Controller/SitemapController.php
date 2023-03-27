@@ -16,6 +16,7 @@ use Seo\Sitemap\SitemapUrl;
 
 /**
  * Class SitemapController
+ *
  * @package Seo\Controller
  */
 class SitemapController extends Controller
